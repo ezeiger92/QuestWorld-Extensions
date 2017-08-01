@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.questworld.extensions</groupId>
+	<artifactId>QuestWorld-Extensions</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<url>https://github.com/ezeiger92/QuestWorld-Extensions</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<outputDirectory>../target</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<repositories>
+		<!-- Bukkit/Spigot repo -->
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+		</repository>
+		<!-- Local file repo -->
+		<repository>
+			<id>local-repo</id>
+			<url>file:${parent.basedir}/repo</url>
+		</repository>
+	</repositories>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Bukkit/Spigot dep -->
+			<dependency>
+				<groupId>org.bukkit</groupId>
+				<artifactId>bukkit</artifactId>
+				<version>1.11.2-R0.1-SNAPSHOT</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- QuestWorld dep -->
+			<!-- IMPORTANT - Replace with QuestWorld-API when ready! -->
+			<dependency>
+				<groupId>me.mrcookieslime</groupId>
+				<artifactId>QuestWorld</artifactId>
+				<version>[2.6.7,)</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- Vault dep -->
+			<dependency>
+				<groupId>net.milkbowl.vault</groupId>
+				<artifactId>VaultAPI</artifactId>
+				<version>1.6</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+			<!-- Citizens dep -->
+			<dependency>
+				<groupId>net.citizensnpcs</groupId>
+				<artifactId>citizensapi</artifactId>
+				<version>2.0.19-SNAPSHOT</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+			<!-- CS CoreLib dep -->
+			<dependency>
+				<groupId>me.mrcookieslime</groupId>
+				<artifactId>CS-CoreLib</artifactId>
+				<version>1.5.9</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+			<!-- A skyblock dep -->
+			<dependency>
+				<groupId>com.wasteofplastic</groupId>
+				<artifactId>askyblock</artifactId>
+				<version>3.0.1.1</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+			<!-- ChatReaction dep -->
+			<dependency>
+				<groupId>me.clip</groupId>
+				<artifactId>chatreaction</artifactId>
+				<version>1.6.2</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+			<!-- Votifier dep -->
+			<dependency>
+				<groupId>com.vexsoftware</groupId>
+				<artifactId>votifier</artifactId>
+				<version>1.9</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<!-- Bukkit/Spigot dep -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- QuestWorld dep -->
+		<!-- IMPORTANT - Replace with QuestWorld-API when ready! -->
+		<dependency>
+			<groupId>me.mrcookieslime</groupId>
+			<artifactId>QuestWorld</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>Votifier</module>
+	</modules>
+</project>
