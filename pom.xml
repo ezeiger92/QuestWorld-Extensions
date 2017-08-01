@@ -24,7 +24,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<outputDirectory>../target</outputDirectory>
+					<outputDirectory>../../target</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -34,6 +34,11 @@
 		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+		</repository>
+		<!-- Vault repo -->
+		<repository>
+			<id>vault-repo</id>
+			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
 		<!-- Local file repo -->
 		<repository>
@@ -64,7 +69,6 @@
 				<artifactId>VaultAPI</artifactId>
 				<version>1.6</version>
 				<scope>provided</scope>
-				<optional>true</optional>
 			</dependency>
 			<!-- Citizens dep -->
 			<dependency>
@@ -72,7 +76,6 @@
 				<artifactId>citizensapi</artifactId>
 				<version>2.0.19-SNAPSHOT</version>
 				<scope>provided</scope>
-				<optional>true</optional>
 			</dependency>
 			<!-- CS CoreLib dep -->
 			<dependency>
@@ -80,7 +83,6 @@
 				<artifactId>CS-CoreLib</artifactId>
 				<version>1.5.9</version>
 				<scope>provided</scope>
-				<optional>true</optional>
 			</dependency>
 			<!-- A skyblock dep -->
 			<dependency>
@@ -88,7 +90,6 @@
 				<artifactId>askyblock</artifactId>
 				<version>3.0.1.1</version>
 				<scope>provided</scope>
-				<optional>true</optional>
 			</dependency>
 			<!-- ChatReaction dep -->
 			<dependency>
@@ -96,7 +97,6 @@
 				<artifactId>chatreaction</artifactId>
 				<version>1.6.2</version>
 				<scope>provided</scope>
-				<optional>true</optional>
 			</dependency>
 			<!-- Votifier dep -->
 			<dependency>
@@ -104,7 +104,6 @@
 				<artifactId>votifier</artifactId>
 				<version>1.9</version>
 				<scope>provided</scope>
-				<optional>true</optional>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -124,6 +123,10 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>Votifier</module>
+		<module>modules/ASkyBlock</module>
+		<module>modules/ChatReaction</module>
+		<module>modules/Citizens</module>
+		<module>modules/Money</module>
+		<module>modules/Votifier</module>
 	</modules>
 </project>

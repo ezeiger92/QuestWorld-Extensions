@@ -5,11 +5,15 @@
 		<artifactId>QuestWorld-Extensions</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>Votifier</artifactId>
+	<artifactId>QW-Money</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>com.vexsoftware</groupId>
-			<artifactId>votifier</artifactId>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>VaultAPI</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.mrcookieslime</groupId>
+			<artifactId>CS-CoreLib</artifactId>
 		</dependency>
 	</dependencies>
 </project>
