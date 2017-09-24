@@ -1,8 +1,9 @@
 package com.questworld.extensions.extras;
 
+import java.util.HashMap;
+
 import org.bukkit.CropState;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,6 +22,8 @@ import me.mrCookieSlime.QuestWorld.utils.Text;
 
 public class HarvestMission extends MissionType implements Listener {
 
+	private static HashMap<Material, Material> crops = new HashMap<>();
+	
 	public HarvestMission() {
 		super("HARVEST", true, true, new ItemStack(Material.WHEAT));
 	}
@@ -30,40 +33,29 @@ public class HarvestMission extends MissionType implements Listener {
 		return "&7Harvest "+instance.getAmount()+"x "+Text.niceName(userDisplayItem(instance).getType().name());
 	}
 	
-	private Material cropOf(Material in) {
-		switch(in) {
-		case SEEDS:
-		case CROPS:
-			return Material.WHEAT;
-			
-		case BEETROOT_SEEDS:
-		case BEETROOT_BLOCK:
-			return Material.BEETROOT;
-			
-		case POTATO:
-			return Material.POTATO_ITEM;
-			
-		case CARROT:
-			return Material.CARROT_ITEM;
-			
-		case NETHER_WART_BLOCK:
-			return Material.NETHER_WARTS;
+	static {
+		crops.put(Material.SEEDS, Material.WHEAT);
+		crops.put(Material.CROPS, Material.WHEAT);
 		
-		case WHEAT:
-		case BEETROOT:
-		case POTATO_ITEM:
-		case CARROT_ITEM:
-		case NETHER_WARTS:
-			return in;
-			
-		default:
-			return null;
-		}
+		crops.put(Material.BEETROOT_SEEDS, Material.BEETROOT);
+		crops.put(Material.BEETROOT_BLOCK, Material.BEETROOT);
+
+		crops.put(Material.POTATO, Material.POTATO_ITEM);
+
+		crops.put(Material.CARROT, Material.CARROT_ITEM);
+
+		crops.put(Material.NETHER_WART_BLOCK, Material.NETHER_WARTS);
+
+		crops.put(Material.WHEAT,        Material.WHEAT);
+		crops.put(Material.BEETROOT,     Material.BEETROOT);
+		crops.put(Material.POTATO_ITEM,  Material.POTATO_ITEM);
+		crops.put(Material.CARROT_ITEM,  Material.CARROT_ITEM);
+		crops.put(Material.NETHER_WARTS, Material.NETHER_WARTS);
 	}
 
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		Material crop = cropOf(instance.getMissionItem().getType());
+		Material crop = crops.get(instance.getMissionItem().getType());
 		if(crop == null)
 			crop = Material.BARRIER;
 			
@@ -75,9 +67,9 @@ public class HarvestMission extends MissionType implements Listener {
 		MaterialData data = event.getBlock().getState().getData();
 		
 		if(data instanceof Crops && ((Crops)data).getState() == CropState.RIPE) {
+			Material crop = crops.get(event.getBlock().getType());
 			QuestWorld.getInstance().getManager(event.getPlayer()).forEachTaskOf(this, mission -> {
-				Material crop = cropOf(event.getBlock().getType());
-				return crop != null && mission.getMissionItem().getType().equals(crop);
+				return crop == mission.getMissionItem().getType();
 			});
 		}
 	}
@@ -92,12 +84,11 @@ public class HarvestMission extends MissionType implements Listener {
 						"&e> Click to change the Crop to",
 						"&ethe Item you are currently holding").get(),
 				event -> {
-					Player p = (Player)event.getWhoClicked();
-					ItemStack mainItem = p.getInventory().getItemInMainHand();
-					if(mainItem == null)
+					ItemStack hand = event.getWhoClicked().getInventory().getItemInMainHand();
+					if(hand == null)
 						return;
 					
-					Material crop = cropOf(mainItem.getType());
+					Material crop = crops.get(hand.getType());
 					if(crop != null)
 						changes.setItem(new ItemStack(crop));
 				}
@@ -107,7 +98,7 @@ public class HarvestMission extends MissionType implements Listener {
 	
 	@Override
 	protected boolean migrateFrom(MissionChange changes) {
-		if(cropOf(changes.getMissionItem().getType()) == null) {
+		if(crops.get(changes.getMissionItem().getType()) == null) {
 			changes.setItem(new ItemStack(Material.WHEAT));
 			return true;
 		}

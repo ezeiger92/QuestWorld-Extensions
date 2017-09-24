@@ -8,7 +8,6 @@ import me.mrCookieSlime.QuestWorld.api.MissionChange;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.Ticking;
 import me.mrCookieSlime.QuestWorld.api.interfaces.IMission;
-import me.mrCookieSlime.QuestWorld.api.menu.MenuData;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.utils.ItemBuilder;
 import me.mrCookieSlime.QuestWorld.utils.Text;
@@ -70,24 +69,24 @@ public class BalanceMission extends MissionType implements Ticking {
 			changes.setCustomInt(0);
 		
 		putButton(17, MissionButton.amount(changes, 50));
-		putButton(11, new MenuData(
+		putButton(11, MissionButton.simpleButton(changes,
 				new ItemBuilder(Material.PAPER).display("Check Type:").selector(changes.getCustomInt(), CheckType.stringValues()).get(),
-				MissionButton.simpleHandler(changes, event -> {
+				event -> {
 					int newV = changes.getCustomInt() + (event.isRightClick() ? -1 : 1);
 					changes.setCustomInt((newV + len) % len);
-				})
+				}
 		));
-		putButton(12, new MenuData(
+		putButton(12, MissionButton.simpleButton(changes,
 				new ItemBuilder(Material.NAME_TAG).display("Currency Display").lore(
 						" &7" + changes.getCustomString(),
 						" &e currency[,1:singular[,2:custom[, ..]]]",
 						"",
 						"&cLeft Click to set currency format",
 						"&cRight Click to remove format").get(),
-				MissionButton.simpleHandler(changes, event -> {
+				event -> {
 					if(event.isRightClick())
 						changes.setCustomString(null);
-				})
+				}
 		));
 	}
 

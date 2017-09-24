@@ -36,12 +36,8 @@ public class CommandMission extends MissionType implements Listener {
 
 	@EventHandler(ignoreCancelled=true, priority=EventPriority.HIGHEST)
 	public void onCommand(PlayerCommandPreprocessEvent event) {
-		// Remove first character ('/')
-		String command = event.getMessage().substring(1);
-		
 		QuestWorld.getInstance().getManager(event.getPlayer()).forEachTaskOf(this, mission -> {
-			// Trim leading '/' here as well before check
-			boolean matches = mission.getCustomString().startsWith(command, 1);
+			boolean matches = event.getMessage().equalsIgnoreCase(mission.getCustomString());
 			
 			if(matches)
 				event.setCancelled(true);
@@ -70,7 +66,7 @@ public class CommandMission extends MissionType implements Listener {
 					}
 					else {
 						Player p = (Player)event.getWhoClicked();
-						p.closeInventory();
+						PlayerTools.closeInventoryWithEvent(p);
 						PlayerTools.promptCommand(
 								p,
 								new SinglePrompt("&aEnter a command (/# to cancel):", (c,s) -> {

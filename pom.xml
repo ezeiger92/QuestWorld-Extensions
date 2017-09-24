@@ -128,6 +128,6 @@
 		<module>modules/Citizens</module>
 		<module>modules/Money</module>
 		<module>modules/Votifier</module>
-		<module>Extras</module>
+		<module>modules/Extras</module>
 	</modules>
 </project>

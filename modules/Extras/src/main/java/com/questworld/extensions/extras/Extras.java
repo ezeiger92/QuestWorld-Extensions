@@ -17,6 +17,7 @@ public class Extras extends QuestExtension {
 	protected void initialize(Plugin parent) {
 		missions = new MissionType[] {
 			new ClickBlockMission(),
+			new CommandMission(),
 			new HarvestMission(),
 			new SubmitAtMission(),
 		};

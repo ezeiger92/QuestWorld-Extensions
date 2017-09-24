@@ -6,6 +6,7 @@ public enum CitizenTranslation implements Translator {
 	// TODO Better names, PH
 	citizen_l("editor.link-citizen"),
 	citizen_link("editor.link-citizen-finished"),
+	citizen_rename("editor.renamed-citizen"),
 	;
 	private String path;
 	private String[] placeholders;

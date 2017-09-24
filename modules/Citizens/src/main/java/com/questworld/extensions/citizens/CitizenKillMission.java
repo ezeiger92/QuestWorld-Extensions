@@ -12,10 +12,8 @@ import me.mrCookieSlime.QuestWorld.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.MissionChange;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.interfaces.IMission;
-import me.mrCookieSlime.QuestWorld.api.menu.MenuData;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.utils.ItemBuilder;
-import me.mrCookieSlime.QuestWorld.utils.PlayerTools;
 import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.NPC;
 
@@ -56,19 +54,7 @@ public class CitizenKillMission extends MissionType implements Listener {
 	@Override
 	protected void layoutMenu(MissionChange changes) {
 		super.layoutMenu(changes);
-		NPC npc = Citizens.npcFrom(changes);
-		putButton(10, new MenuData(
-				new ItemBuilder(Material.NAME_TAG).display("&dCitizen &f#" + changes.getCustomInt()).lore(
-						"&7Name: &r" + (npc != null ? npc.getName(): "&4N/A"),
-						"",
-						"&e> Click to change the selected NPC").get(),
-				MissionButton.simpleHandler(changes, event -> {
-					Player p = (Player)event.getWhoClicked();
-					PlayerTools.sendTranslation(p, true, CitizenTranslation.citizen_l);
-					Citizens.link.put(p.getUniqueId(), changes.getSource());
-					p.closeInventory();
-				})
-		));
+		putButton(10, CitizenButton.rename(changes));
 		putButton(17, MissionButton.amount(changes));
 	}
 }

@@ -13,13 +13,11 @@ import me.mrCookieSlime.CSCoreLibPlugin.PlayerRunnable;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawMessage;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawMessage.HoverAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.CustomBookOverlay;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.MenuHelper;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.MenuHelper.ChatHandler;
 import me.mrCookieSlime.QuestWorld.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.MissionChange;
+import me.mrCookieSlime.QuestWorld.api.SinglePrompt;
 import me.mrCookieSlime.QuestWorld.api.Translation;
 import me.mrCookieSlime.QuestWorld.api.interfaces.IMission;
-import me.mrCookieSlime.QuestWorld.api.menu.MenuData;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.managers.PlayerManager;
 import me.mrCookieSlime.QuestWorld.quests.QuestBook;
@@ -102,22 +100,21 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		lore.add("&e> Edit the Quest's Description");
 		lore.add("&7(Color Codes are not supported)");
 		
-		putButton(11, new MenuData(
+		putButton(11, MissionButton.simpleButton(changes,
 				new ItemBuilder(Material.NAME_TAG).display("&rQuest Description").lore(lore.toArray(new String[lore.size()])).get(),
-				MissionButton.simpleHandler(changes, event -> {
+				event -> {
 					Player p = (Player)event.getWhoClicked();
-					PlayerTools.sendTranslation(p, true, Translation.mission_desc);
-					MenuHelper.awaitChatInput(p, new ChatHandler() {
-						
-						@Override
-						public boolean onChat(Player p, String message) {
-							changes.getSource().setDescription(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', message)));
-							QuestBook.openQuestMissionEditor(p, changes.getSource());
-							return false;
-						}
-					});
-					p.closeInventory();
-				})
+					PlayerTools.promptInput(p, new SinglePrompt(
+							PlayerTools.makeTranslation(true, Translation.mission_desc),
+							(c,s) -> {
+								changes.getSource().setDescription(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', s)));
+								QuestBook.openQuestMissionEditor((Player) c.getForWhom(), changes.getSource());
+								return false;
+							}
+					));
+					
+					PlayerTools.closeInventoryWithEvent(p);
+				}
 		));
 	}
 }
