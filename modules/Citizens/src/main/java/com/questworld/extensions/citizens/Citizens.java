@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import me.mrCookieSlime.CSCoreLibPlugin.general.Particles.MC_1_8.ParticleEffect;
 import me.mrCookieSlime.QuestWorld.QuestWorld;
+import me.mrCookieSlime.QuestWorld.api.MissionChange;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestExtension;
 import me.mrCookieSlime.QuestWorld.api.interfaces.IMission;
@@ -27,7 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 public class Citizens extends QuestExtension implements Listener {
-	public static Map<UUID, Mission> link = new HashMap<UUID, Mission>();
+	public static Map<UUID, MissionChange> link = new HashMap<>();
 	
 	public static NPC npcFrom(IMission instance) {
 		return npcFrom(instance.getCustomInt());
@@ -94,11 +95,16 @@ public class Citizens extends QuestExtension implements Listener {
 	@EventHandler
 	public void onInteract(NPCRightClickEvent e) {
 		Player p = e.getClicker();
-		if (link.containsKey(p.getUniqueId())) {
-			link.get(p.getUniqueId()).setCustomInt(e.getNPC().getId());
-			QuestBook.openQuestMissionEditor(p, link.get(p.getUniqueId()));
-			link.remove(p.getUniqueId());
-			PlayerTools.sendTranslation(p, true, CitizenTranslation.citizen_link);
+		MissionChange changes = link.remove(p.getUniqueId());
+		if (changes != null) {
+			changes.setCustomInt(e.getNPC().getId());
+			
+			if(changes.sendEvent()) {
+				changes.apply();
+				PlayerTools.sendTranslation(p, true, CitizenTranslation.citizen_link);
+			}
+			
+			QuestBook.openQuestMissionEditor(p, changes.getSource());
 		}
 	}
 }

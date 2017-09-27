@@ -42,6 +42,6 @@ public class CitizenInteractMission extends MissionType implements Listener {
 	@Override
 	protected void layoutMenu(MissionChange changes) {
 		super.layoutMenu(changes);
-		putButton(10, CitizenButton.rename(changes));
+		putButton(10, CitizenButton.select(changes));
 	}
 }
