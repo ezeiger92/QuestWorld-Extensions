@@ -1,16 +1,14 @@
-package com.questworld.extensions.citizens;
+package com.questworld.extensions.extras;
 
 import me.mrCookieSlime.QuestWorld.api.Translator;
 
-public enum CitizenTranslation implements Translator {
-	// TODO Better names, PH
-	citizen_l("editor.link-citizen"),
-	citizen_link("editor.link-citizen-finished"),
-	citizen_rename("editor.renamed-citizen"),
+public enum ExtraTranslation implements Translator {
+	test("test.node", "player", "length")
 	;
 	private String path;
 	private String[] placeholders;
-	CitizenTranslation(String path, String... placeholders) {
+	
+	ExtraTranslation(String path, String... placeholders) {
 		this.path = path;
 		this.placeholders = wrap(placeholders);
 	}

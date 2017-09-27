@@ -1,10 +1,19 @@
 package com.questworld.extensions.extras;
 
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.UUID;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import me.mrCookieSlime.QuestWorld.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.MissionChange;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.SinglePrompt;
@@ -16,20 +25,64 @@ import me.mrCookieSlime.QuestWorld.utils.ItemBuilder;
 import me.mrCookieSlime.QuestWorld.utils.PlayerTools;
 import me.mrCookieSlime.QuestWorld.utils.Text;
 
-public class ClickBlockMission extends MissionType {
+public class ClickBlockMission extends MissionType implements Listener {
 
+	private static HashSet<Material> transparent = new HashSet<>();
+	private HashMap<UUID, MissionChange> waiting = new HashMap<>();
+	
 	public ClickBlockMission() {
 		super("CLICK_BLOCK", false, false, new ItemStack(Material.STONE_BUTTON));
+	}
+	
+	static {
+		transparent.add(Material.AIR);
+		transparent.add(Material.WATER);
+		transparent.add(Material.LAVA);
 	}
 
 	@Override
 	protected String userInstanceDescription(IMission instance) {
-		return "Click block at X Y Z";
+		return "Click block at " + instance.getLocation().toVector().toString()
+				+ " in " + instance.getLocation().getWorld().getName();
 	}
 
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
 		return getSelectorItem().clone();
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		Player p = event.getPlayer();
+		MissionChange changes = waiting.remove(p.getUniqueId());
+		if(changes != null) {
+			event.setCancelled(true);
+			if(event.getClickedBlock() == null) {
+				p.sendMessage("Cancelled");
+			}
+			else {
+				p.sendMessage("changing");
+				changes.setLocation(event.getClickedBlock().getLocation());
+				if(changes.sendEvent()) {
+					changes.apply();
+					p.sendMessage("changed");
+				}
+			}
+			QuestBook.openQuestMissionEditor(p, changes.getSource());
+		}
+		
+		if(event.getClickedBlock() != null) {
+			Location l1 = event.getClickedBlock().getLocation();
+					
+			QuestWorld.getInstance().getManager(p).forEachTaskOf(this, mission -> {
+				Location l2 = mission.getLocation();
+				return
+						l1.getWorld() == l2.getWorld()
+						&& Math.abs(l1.getX() - l2.getX()) < 0.5
+						&& Math.abs(l1.getZ() - l2.getZ()) < 0.5
+						&& Math.abs(l1.getY() - l2.getY()) < 0.5;
+			});
+		}
 	}
 	
 	@Override
@@ -40,7 +93,10 @@ public class ClickBlockMission extends MissionType {
 				changes,
 				new ItemStack(Material.BEDROCK),
 				event -> {
-					//Player p = (Player)event.getWhoClicked();
+					Player p = (Player) event.getWhoClicked();
+					PlayerTools.closeInventoryWithEvent(p);
+					waiting.put(p.getUniqueId(), changes);
+					p.sendMessage("Click a block to set the location, or click air to cancel");
 				}
 		));
 		
