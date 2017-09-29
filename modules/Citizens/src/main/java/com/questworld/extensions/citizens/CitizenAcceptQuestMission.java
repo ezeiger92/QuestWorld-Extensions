@@ -109,7 +109,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 							(c,s) -> {
 								changes.getSource().setDescription(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', s)));
 								QuestBook.openQuestMissionEditor((Player) c.getForWhom(), changes.getSource());
-								return false;
+								return true;
 							}
 					));
 					
