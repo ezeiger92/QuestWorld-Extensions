@@ -14,7 +14,8 @@ public class CitizenButton {
 	public static MenuData select(IMissionState changes) {
 		NPC npc = Citizens.npcFrom(changes);
 		return MissionButton.simpleButton(changes,
-				new ItemBuilder(Material.NAME_TAG).display("&dCitizen &f#" + changes.getCustomInt()).lore(
+				new ItemBuilder(Material.NAME_TAG).wrapText(
+						"&dCitizen &f#" + changes.getCustomInt(),
 						"&7Name: &r" + (npc != null ? npc.getName(): "&4N/A"),
 						"",
 						"&e> Click to change the selected NPC").get(),

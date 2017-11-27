@@ -4,6 +4,7 @@ import org.bukkit.plugin.Plugin;
 
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestExtension;
+import me.mrCookieSlime.QuestWorld.util.BukkitService;
 import me.mrCookieSlime.QuestWorld.util.Log;
 import net.milkbowl.vault.economy.Economy;
 
@@ -45,7 +46,7 @@ public class Money extends QuestExtension {
 
 	@Override
 	protected void initialize(Plugin parent) {
-		economy = getService(Economy.class);
+		economy = BukkitService.get(Economy.class);
 		if(economy == null)
 			throw new NullPointerException("Economy is required for this extension!");
 		

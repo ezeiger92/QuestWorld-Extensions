@@ -56,7 +56,7 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		Material crop = crops.get(instance.getMissionItem().getType());
+		Material crop = crops.get(instance.getItem().getType());
 		if(crop == null)
 			crop = Material.BARRIER;
 			
@@ -71,7 +71,7 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 			Material crop = crops.get(event.getBlock().getType());
 			
 			for(MissionSet.Result r : MissionSet.of(this, event.getPlayer()))
-				if(crop == r.getMission().getMissionItem().getType())
+				if(crop == r.getMission().getItem().getType())
 					r.addProgress(1);
 		}
 	}
@@ -81,10 +81,9 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 		super.layoutMenu(changes);
 		putButton(10, MissionButton.simpleButton(
 				changes,
-				new ItemBuilder(changes.getDisplayItem()).lore(
+				new ItemBuilder(changes.getDisplayItem()).wrapLore(
 						"",
-						"&e> Click to change the Crop to",
-						"&ethe Item you are currently holding").get(),
+						"&e> Click to change the Crop to the Item you are currently holding").get(),
 				event -> {
 					ItemStack hand = event.getWhoClicked().getInventory().getItemInMainHand();
 					if(hand == null)

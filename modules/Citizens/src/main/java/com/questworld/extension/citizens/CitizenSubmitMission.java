@@ -23,7 +23,7 @@ public class CitizenSubmitMission extends MissionType implements Listener {
 	
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		return instance.getMissionItem();
+		return instance.getItem();
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class CitizenSubmitMission extends MissionType implements Listener {
 			IMission mission = r.getMission();
 			
 			if(mission.getCustomInt() != e.getNPC().getId()
-					|| !hand.isSimilar(mission.getMissionItem()))
+					|| !hand.isSimilar(mission.getItem()))
 				continue;
 			
 			int amount = hand.getAmount();

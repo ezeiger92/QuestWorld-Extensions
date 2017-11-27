@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import me.mrCookieSlime.QuestWorld.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestExtension;
 import me.mrCookieSlime.QuestWorld.api.QuestStatus;
+import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
 import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
@@ -60,14 +60,14 @@ public class Citizens extends QuestExtension implements Listener {
 			@Override
 			public void run() {
 				for(int i = 0; i < missions.length; ++i)
-					for(IMission task : QuestWorld.get().getMissionsOf(missions[i])) {
+					for(IMission task : QuestWorld.getViewer().getMissionsOf(missions[i])) {
 						NPC npc = npcFrom(task);
 						if (npc != null && npc.getEntity() != null) {
 							List<Player> players = new ArrayList<Player>();
 							
 							for (Entity n: npc.getEntity().getNearbyEntities(20D, 8D, 20D)) {
 								if (n instanceof Player) {
-									PlayerManager manager = PlayerManager.of(n);
+									PlayerManager manager = PlayerManager.of((Player)n);
 									if (manager.getStatus(task.getQuest()).equals(QuestStatus.AVAILABLE) && manager.hasUnlockedTask(task) && !manager.hasCompletedTask(task)) {
 										players.add((Player) n);
 									}

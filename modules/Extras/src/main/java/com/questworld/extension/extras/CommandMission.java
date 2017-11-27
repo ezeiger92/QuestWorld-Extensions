@@ -50,7 +50,8 @@ public class CommandMission extends MissionType implements Listener {
 		
 		putButton(10, MissionButton.simpleButton(
 				changes,
-				new ItemBuilder(Material.NAME_TAG).display("&dCommand").lore(
+				new ItemBuilder(Material.NAME_TAG).wrapText(
+						"&dCommand",
 						changes.getCustomString().length()==0 ? "&cNo command set" : "&a"+changes.getCustomString(),
 						"",
 						"&eLeft Click to Set Command",
@@ -59,9 +60,6 @@ public class CommandMission extends MissionType implements Listener {
 				event -> {
 					if(event.isRightClick()) {
 						changes.setCustomString("");
-						if(changes.apply()) {
-							
-						}
 					}
 					else {
 						Player p = (Player)event.getWhoClicked();

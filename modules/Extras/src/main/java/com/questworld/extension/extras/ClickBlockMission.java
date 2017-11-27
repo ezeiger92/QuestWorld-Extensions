@@ -100,7 +100,8 @@ public class ClickBlockMission extends MissionType implements Listener {
 		
 		putButton(11, MissionButton.simpleButton(
 				changes,
-				new ItemBuilder(Material.NAME_TAG).display("&r" + changes.getCustomString()).lore(
+				new ItemBuilder(Material.NAME_TAG).wrapText(
+						"&r" + changes.getCustomString(),
 						 "",
 						 "&e> Give your Location a Name").get(),
 				event -> {
@@ -125,7 +126,8 @@ public class ClickBlockMission extends MissionType implements Listener {
 		));
 		putButton(17, MissionButton.simpleButton(
 				changes,
-				new ItemBuilder(Material.COMPASS).display("&7Radius: &a" + changes.getCustomInt()).lore(
+				new ItemBuilder(Material.COMPASS).wrapText(
+						"&7Radius: &a" + changes.getCustomInt(),
 						"",
 						"&rLeft Click: &e+1",
 						"&rRight Click: &e-1",

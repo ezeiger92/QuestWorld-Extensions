@@ -1,8 +1,6 @@
 package com.questworld.extension.citizens;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -46,7 +44,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	private void book(Player p, NPC npc, MissionSet.Result result) {
 		TellRawMessage lore = new TellRawMessage();
 		lore.addText(npc.getName() + ":\n\n");
-		lore.addText(result.getMission().getDescription());
+		lore.addText(Text.colorize(result.getMission().getDescription()));
 		lore.color(ChatColor.DARK_AQUA);
 		lore.addText("\n\n    ");
 		lore.addText(Text.colorize("&7( &a&l\u2714 &7)"));
@@ -91,7 +89,8 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	protected void layoutMenu(IMissionState changes) {
 		super.layoutMenu(changes);
 		
-		List<String> lore = new ArrayList<String>();
+		// Old way
+		/*List<String> lore = new ArrayList<String>();
 		lore.add("");
 
 		// Could be done with .split("?<=\\G.{32}"), but why regex when we don't need to?
@@ -102,10 +101,16 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		
 		lore.add("");
 		lore.add("&e> Edit the Quest's Description");
-		lore.add("&7(Color Codes are not supported)");
+		lore.add("&7(Color Codes are not supported)");*/
 		
 		putButton(11, MissionButton.simpleButton(changes,
-				new ItemBuilder(Material.NAME_TAG).display("&rQuest Description").lore(lore.toArray(new String[lore.size()])).get(),
+				new ItemBuilder(Material.NAME_TAG).wrapText(
+						"&rQuest Description",
+						"",
+						changes.getDescription(),
+						"",
+						"&e> Edit the Quest's Description",
+						"&7(Color Codes supported)").get(),
 				event -> {
 					Player p = (Player)event.getWhoClicked();
 					PlayerTools.promptInput(p, new SinglePrompt(

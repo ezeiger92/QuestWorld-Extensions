@@ -78,9 +78,10 @@ public class BalanceMission extends MissionType implements Ticking {
 				}
 		));
 		putButton(12, MissionButton.simpleButton(changes,
-				new ItemBuilder(Material.NAME_TAG).display("Currency Display").lore(
+				new ItemBuilder(Material.NAME_TAG).wrapText(
+						"Currency Display",
 						" &7" + changes.getCustomString(),
-						" &e currency[,1:singular[,2:custom[, ..]]]",
+						" &ecurrency[,1:singular[,2:custom[, ..]]]",
 						"",
 						"&cLeft Click to set currency format",
 						"&cRight Click to remove format").get(),
