@@ -74,15 +74,8 @@ public class Citizens extends QuestExtension implements Listener {
 								}
 							}
 							for(Player p : players) {
-								p.spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add(0, 1, 0), 20, 0.5, 0.7, 0.5, 0);
+								p.spawnParticle(Particle.VILLAGER_HAPPY, npc.getEntity().getLocation().add(0, 1, 0), 20, 0.5, 0.7, 0.5, 0);
 							}
-							/*if (!players.isEmpty()) {
-								try {
-									ParticleEffect.VILLAGER_HAPPY.display(npc.getEntity().getLocation().add(0, 1, 0), 0.5F, 0.7F, 0.5F, 0, 20, players);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}*/
 						}
 					}
 			}
