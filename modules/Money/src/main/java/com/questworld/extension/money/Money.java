@@ -2,14 +2,14 @@ package com.questworld.extension.money;
 
 import org.bukkit.plugin.Plugin;
 
-import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestExtension;
-import me.mrCookieSlime.QuestWorld.util.BukkitService;
+import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.util.Log;
 import net.milkbowl.vault.economy.Economy;
 
 public class Money extends QuestExtension {
 	private static Economy economy = null;
+	
 	public static Economy getEcon() {
 		return economy;
 	}
@@ -36,28 +36,17 @@ public class Money extends QuestExtension {
 		
 		return backup;
 	}
-
-	private MissionType[] missions = null;
 	
-	@Override
-	public String[] getDepends() {
-		return new String[] { "Vault" };
+	public Money() {
+		super("Vault");
+		setMissionTypes(
+			new BalanceMission(),
+			new PayMission());
 	}
 
 	@Override
 	protected void initialize(Plugin parent) {
-		economy = BukkitService.get(Economy.class);
-		if(economy == null)
-			throw new NullPointerException("Economy is required for this extension!");
-		
-		missions = new MissionType[] {
-			new BalanceMission(),
-			new PayMission(),
-		};
-	}
-
-	@Override
-	public MissionType[] getMissions() {
-		return missions;
+		economy = QuestWorld.getEconomy().orElseThrow(() ->
+			new NullPointerException("Economy is required for this extension!"));
 	}
 }

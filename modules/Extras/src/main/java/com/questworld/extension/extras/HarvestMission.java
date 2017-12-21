@@ -1,6 +1,6 @@
 package com.questworld.extension.extras;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 
 import org.bukkit.CropState;
 import org.bukkit.Material;
@@ -13,17 +13,18 @@ import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 
 import me.mrCookieSlime.QuestWorld.api.Decaying;
-import me.mrCookieSlime.QuestWorld.api.MissionSet;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
+import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
+import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
 import me.mrCookieSlime.QuestWorld.util.Text;
 
 public class HarvestMission extends MissionType implements Listener, Decaying {
 
-	private static HashMap<Material, Material> crops = new HashMap<>();
+	private static EnumMap<Material, Material> crops = new EnumMap<>(Material.class);
 	
 	public HarvestMission() {
 		super("HARVEST", true, new ItemStack(Material.WHEAT));
@@ -70,15 +71,23 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 		if(data instanceof Crops && ((Crops)data).getState() == CropState.RIPE) {
 			Material crop = crops.get(event.getBlock().getType());
 			
-			for(MissionSet.Result r : MissionSet.of(this, event.getPlayer()))
+			for(MissionEntry r : QuestWorld.getMissionEntries(this, event.getPlayer()))
 				if(crop == r.getMission().getItem().getType())
 					r.addProgress(1);
 		}
 	}
 	
 	@Override
+	public void validate(IMissionState missionState) {
+		if(crops.containsKey(missionState.getItem().getType()))
+			return;
+		
+		missionState.setItem(new ItemStack(Material.WHEAT));
+		missionState.apply();
+	}
+	
+	@Override
 	protected void layoutMenu(IMissionState changes) {
-		super.layoutMenu(changes);
 		putButton(10, MissionButton.simpleButton(
 				changes,
 				new ItemBuilder(changes.getDisplayItem()).wrapLore(

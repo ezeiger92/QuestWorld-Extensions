@@ -6,10 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.QuestWorld.api.MissionSet;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
+import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
+import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.util.PlayerTools;
 import me.mrCookieSlime.QuestWorld.util.Text;
@@ -41,7 +42,7 @@ public class CitizenSubmitMission extends MissionType implements Listener {
 		Player p = e.getClicker();
 		ItemStack hand = PlayerTools.getMainHandItem(p);
 		
-		for(MissionSet.Result r : MissionSet.of(this, p)) {
+		for(MissionEntry r : QuestWorld.getMissionEntries(this, p)) {
 			IMission mission = r.getMission();
 			
 			if(mission.getCustomInt() != e.getNPC().getId()
@@ -60,7 +61,6 @@ public class CitizenSubmitMission extends MissionType implements Listener {
 	
 	@Override
 	protected void layoutMenu(IMissionState changes) {
-		super.layoutMenu(changes);
 		putButton(10, CitizenButton.select(changes));
 		putButton(11, MissionButton.item(changes));
 		putButton(17, MissionButton.amount(changes));

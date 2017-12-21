@@ -12,12 +12,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.QuestWorld.api.MissionSet;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
+import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.SinglePrompt;
 import me.mrCookieSlime.QuestWorld.api.Translation;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
+import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
 import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
@@ -72,7 +73,7 @@ public class ClickBlockMission extends MissionType implements Listener {
 		if(event.getClickedBlock() != null) {
 			Location l1 = event.getClickedBlock().getLocation();
 			
-			for(MissionSet.Result r : MissionSet.of(this, p)) {
+			for(MissionEntry r : QuestWorld.getMissionEntries(this, p)) {
 				Location l2 = r.getMission().getLocation();
 				if(l1.getWorld() == l2.getWorld()
 					&& Math.abs(l1.getX() - l2.getX()) < 0.5
@@ -85,14 +86,12 @@ public class ClickBlockMission extends MissionType implements Listener {
 	
 	@Override
 	protected void layoutMenu(IMissionState changes) {
-		super.layoutMenu(changes);
-
 		putButton(10, MissionButton.simpleButton(
 				changes,
 				new ItemStack(Material.BEDROCK),
 				event -> {
 					Player p = (Player) event.getWhoClicked();
-					PlayerTools.closeInventoryWithEvent(p);
+					p.closeInventory();
 					waiting.put(p.getUniqueId(), changes);
 					p.sendMessage("Click a block to set the location, or click air to cancel");
 				}
@@ -107,6 +106,7 @@ public class ClickBlockMission extends MissionType implements Listener {
 				event -> {
 					Player p = (Player)event.getWhoClicked();
 					
+					p.closeInventory();
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.LOCMISSION_NAME_EDIT),
 							(c,s) -> {
@@ -120,8 +120,6 @@ public class ClickBlockMission extends MissionType implements Listener {
 								return true;
 							}
 					));
-
-					PlayerTools.closeInventoryWithEvent(p);
 				}
 		));
 		putButton(17, MissionButton.simpleButton(

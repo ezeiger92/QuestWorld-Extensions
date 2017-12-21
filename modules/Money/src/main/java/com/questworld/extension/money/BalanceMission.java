@@ -4,11 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.QuestWorld.api.MissionSet;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.Ticking;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
+import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
 import me.mrCookieSlime.QuestWorld.util.Text;
@@ -93,7 +93,7 @@ public class BalanceMission extends MissionType implements Ticking {
 	}
 
 	@Override
-	public void onManual(Player player, MissionSet.Result result) {
+	public void onManual(Player player, MissionEntry result) {
 		Economy e = Money.getEcon();
 		if(e.hasAccount(player))
 			result.setProgress((int)e.getBalance(player));

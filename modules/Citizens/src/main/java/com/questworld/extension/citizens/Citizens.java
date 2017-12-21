@@ -1,74 +1,58 @@
 package com.questworld.extension.citizens;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestExtension;
-import me.mrCookieSlime.QuestWorld.api.QuestStatus;
 import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
-import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
-import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
-import me.mrCookieSlime.QuestWorld.manager.PlayerManager;
-import me.mrCookieSlime.QuestWorld.util.PlayerTools;
+import me.mrCookieSlime.QuestWorld.api.contract.IPlayerStatus;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-public class Citizens extends QuestExtension implements Listener {
-	public static Map<UUID, IMissionState> link = new HashMap<>();
-	
+public class Citizens extends QuestExtension {
 	public static NPC npcFrom(IMission instance) {
 		return npcFrom(instance.getCustomInt());
 	}
-	
-	private MissionType[] missions;
 	
 	public static NPC npcFrom(int id) {
 		return CitizensAPI.getNPCRegistry().getById(id);
 	}
 	
-	@Override
-	public String[] getDepends() {
-		return new String[] { "Citizens" };
-	}
-	
-	@Override
-	public void initialize(Plugin parent) {
-		missions = new MissionType[] {
+	public Citizens() {
+		super("Citizens", "CS-CoreLib");
+		setMissionTypes(
 			new CitizenInteractMission(),
 			new CitizenSubmitMission(),
 			new CitizenKillMission(),
-			new CitizenAcceptQuestMission(),
-		};
-		
-		parent.getServer().getPluginManager().registerEvents(this, parent);
+			new CitizenAcceptQuestMission());
+	}
+	
+	@Override
+	protected void initialize(Plugin parent) {
+		parent.getServer().getPluginManager().registerEvents(new CitizenButton.Listener(), parent);
 		
 		parent.getServer().getScheduler().scheduleSyncRepeatingTask(parent, new Runnable() {
 			
 			@Override
 			public void run() {
+				MissionType[] missions = getMissionTypes();
 				for(int i = 0; i < missions.length; ++i)
-					for(IMission task : QuestWorld.getViewer().getMissionsOf(missions[i])) {
-						NPC npc = npcFrom(task);
+					for(IMission mission : QuestWorld.getViewer().getMissionsOf(missions[i])) {
+						NPC npc = npcFrom(mission);
 						if (npc != null && npc.getEntity() != null) {
 							List<Player> players = new ArrayList<Player>();
 							
 							for (Entity n: npc.getEntity().getNearbyEntities(20D, 8D, 20D)) {
 								if (n instanceof Player) {
-									PlayerManager manager = PlayerManager.of((Player)n);
-									if (manager.getStatus(task.getQuest()).equals(QuestStatus.AVAILABLE) && manager.hasUnlockedTask(task) && !manager.hasCompletedTask(task)) {
+									IPlayerStatus manager = QuestWorld.getPlayerStatus((Player)n);
+									if (manager.isMissionActive(mission)) {
 										players.add((Player) n);
 									}
 								}
@@ -80,25 +64,5 @@ public class Citizens extends QuestExtension implements Listener {
 					}
 			}
 		}, 0L, 12L);
-	}
-	
-	@Override
-	public MissionType[] getMissions() {
-		return missions;
-	}
-
-	@EventHandler
-	public void onInteract(NPCRightClickEvent e) {
-		Player p = e.getClicker();
-		IMissionState changes = link.remove(p.getUniqueId());
-		if (changes != null) {
-			changes.setCustomInt(e.getNPC().getId());
-			
-			if(changes.apply()) {
-				PlayerTools.sendTranslation(p, true, CitizenTranslation.CITIZEN_NPC_SET);
-			}
-			
-			QuestBook.openQuestMissionEditor(p, changes.getSource());
-		}
 	}
 }

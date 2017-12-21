@@ -6,10 +6,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import me.clip.chatreaction.events.ReactionWinEvent;
-import me.mrCookieSlime.QuestWorld.api.MissionSet;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
+import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
+import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 
 public class ChatReactMission extends MissionType implements Listener {
@@ -33,13 +34,12 @@ public class ChatReactMission extends MissionType implements Listener {
 	
 	@EventHandler
 	public void onWin(ReactionWinEvent e) {
-		for(MissionSet.Result r : MissionSet.of(this, e.getWinner()))
+		for(MissionEntry r : QuestWorld.getMissionEntries(this, e.getWinner()))
 			r.addProgress(1);
 	}
 	
 	@Override
 	protected void layoutMenu(IMissionState changes) {
-		super.layoutMenu(changes);
 		putButton(17, MissionButton.amount(changes));
 	}
 }

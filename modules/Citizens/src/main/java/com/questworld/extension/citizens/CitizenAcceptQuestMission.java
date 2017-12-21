@@ -1,6 +1,6 @@
 package com.questworld.extension.citizens;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,11 +12,12 @@ import me.mrCookieSlime.CSCoreLibPlugin.PlayerRunnable;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawMessage;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawMessage.HoverAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.CustomBookOverlay;
-import me.mrCookieSlime.QuestWorld.api.MissionSet;
+import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.SinglePrompt;
 import me.mrCookieSlime.QuestWorld.api.Translation;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
+import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
 import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
@@ -41,7 +42,11 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		return "&7Accept this Quest by talking to " + name;
 	}
 	
-	private void book(Player p, NPC npc, MissionSet.Result result) {
+	private void book(Player p, NPC npc, MissionEntry result) {
+		book(p, npc, result);
+	}
+	
+	private void book(Player p, NPC npc, MissionEntry result, boolean back) {
 		TellRawMessage lore = new TellRawMessage();
 		lore.addText(npc.getName() + ":\n\n");
 		lore.addText(Text.colorize(result.getMission().getDescription()));
@@ -58,51 +63,69 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		});
 		lore.addText("      ");
 		lore.addText(Text.colorize("&7( &4&l\u2718 &7)"));
-		lore.addHoverEvent(HoverAction.SHOW_TEXT, Text.colorize("&7Click to do this Quest later"));
-		lore.addClickEvent(new PlayerRunnable(3) {
-			
-			@Override
-			public void run(Player p) {
-			}
-		});
+		if(back) {
+			lore.addHoverEvent(HoverAction.SHOW_TEXT, Text.colorize("&7Click to go back"));
+			lore.addClickEvent(new PlayerRunnable(3) {
+				@Override
+				public void run(Player p) {
+					list(p, npc);
+				}
+			});
+		}
+		else {
+			lore.addHoverEvent(HoverAction.SHOW_TEXT, Text.colorize("&7Click to do this Quest later"));
+			lore.addClickEvent(new PlayerRunnable(3) {
+				@Override
+				public void run(Player p) {
+				}
+			});
+		}
+		new CustomBookOverlay("Quest", "TheBusyBiscuit", lore).open(p);
+	}
+	
+	private void list(Player p, NPC npc) {
+		ArrayList<MissionEntry> available = new ArrayList<>();
+		
+		for(MissionEntry result : QuestWorld.getMissionEntries(this, p))
+			if(result.getMission().getCustomInt() == npc.getId())
+				available.add(result);
+		
+		if(available.isEmpty())
+			return;
+		
+		if(available.size() == 1) {
+			book(p, npc, available.get(0));
+			return;
+		}
+		
+		TellRawMessage lore = new TellRawMessage();
+		lore.addText(npc.getName() + ":\n");
+		lore.addText("  Available Quests:\n\n");
+		
+		for(MissionEntry entry : available) {
+			lore.addText("    " + "" + "\n");
+			lore.addHoverEvent(HoverAction.SHOW_TEXT, String.join("\n", Text.wrap(32, 
+					Text.colorize(entry.getMission().getDescription())
+					)));
+			lore.addClickEvent(new PlayerRunnable(3) {
+				
+				@Override
+				public void run(Player p) {
+					book(p, npc, entry, true);
+				}
+			});
+		}
 		new CustomBookOverlay("Quest", "TheBusyBiscuit", lore).open(p);
 	}
 	
 	@Override
 	@EventHandler
 	public void onInteract(NPCRightClickEvent e) {
-		Player p = e.getClicker();
-		
-		Iterator<MissionSet.Result> iterator = MissionSet.of(this, p).iterator();
-		
-		while(iterator.hasNext()) {
-			MissionSet.Result r = iterator.next();
-			
-			if(r.getMission().getCustomInt() == e.getNPC().getId()) {
-				book(p, e.getNPC(), r);
-				break;
-			}
-		}
+		list(e.getClicker(), e.getNPC());
 	}
 	
 	@Override
 	protected void layoutMenu(IMissionState changes) {
-		super.layoutMenu(changes);
-		
-		// Old way
-		/*List<String> lore = new ArrayList<String>();
-		lore.add("");
-
-		// Could be done with .split("?<=\\G.{32}"), but why regex when we don't need to?
-		for(int i = 0, len = changes.getDescription().length(); i < len; i += 32) {
-			int end = Math.min(i + 32, len);
-			lore.add(changes.getDescription().substring(i, end));
-		}
-		
-		lore.add("");
-		lore.add("&e> Edit the Quest's Description");
-		lore.add("&7(Color Codes are not supported)");*/
-		
 		putButton(11, MissionButton.simpleButton(changes,
 				new ItemBuilder(Material.NAME_TAG).wrapText(
 						"&rQuest Description",
@@ -113,6 +136,8 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 						"&7(Color Codes supported)").get(),
 				event -> {
 					Player p = (Player)event.getWhoClicked();
+					
+					p.closeInventory();
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.MISSION_DESC_EDIT),
 							(c,s) -> {
@@ -124,8 +149,6 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 								return true;
 							}
 					));
-					
-					PlayerTools.closeInventoryWithEvent(p);
 				}
 		));
 	}

@@ -6,22 +6,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.QuestWorld.api.Manual;
-import me.mrCookieSlime.QuestWorld.api.MissionSet;
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.SinglePrompt;
 import me.mrCookieSlime.QuestWorld.api.Translation;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
+import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
 import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
 import me.mrCookieSlime.QuestWorld.extension.builtin.LocationMission;
+import me.mrCookieSlime.QuestWorld.extension.builtin.SubmitMission;
 import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
 import me.mrCookieSlime.QuestWorld.util.PlayerTools;
 import me.mrCookieSlime.QuestWorld.util.Text;
 
 public class SubmitAtMission extends MissionType implements Manual {
-	Manual submit = QuestWorld.getMissionType("SUBMIT");
+	SubmitMission submit = QuestWorld.getMissionType("SUBMIT");
 	LocationMission locate = QuestWorld.getMissionType("REACH_LOCATION");
 	
 	public SubmitAtMission() {
@@ -33,7 +34,7 @@ public class SubmitAtMission extends MissionType implements Manual {
 		Location location = instance.getLocation();
 		String locationName = instance.getCustomString();
 		if(locationName.isEmpty())
-			locationName = LocationMission.coordinateString(location);
+			locationName = Text.stringOf(location);
 		
 		return "&7Submit "+instance.getAmount()+"x "
 				+ Text.niceName(instance.getItem().getType().name())
@@ -41,7 +42,7 @@ public class SubmitAtMission extends MissionType implements Manual {
 	}
 
 	@Override
-	public void onManual(Player player, MissionSet.Result result) {
+	public void onManual(Player player, MissionEntry result) {
 		int progress = result.getProgress();
 		locate.onManual(player, result);
 		
@@ -53,12 +54,17 @@ public class SubmitAtMission extends MissionType implements Manual {
 
 	@Override
 	public String getLabel() {
-		return "Submit";
+		return "&r> Click to submit items";
+	}
+	
+	@Override
+	public void validate(IMissionState missionState) {
+		locate.validate(missionState);
+		submit.validate(missionState);
 	}
 	
 	@Override
 	protected void layoutMenu(IMissionState changes) {
-		super.layoutMenu(changes);
 		putButton(10, MissionButton.item(changes));
 		putButton(17, MissionButton.amount(changes));
 		putButton(11, MissionButton.location(changes));
@@ -71,6 +77,7 @@ public class SubmitAtMission extends MissionType implements Manual {
 				event -> {
 					Player p = (Player)event.getWhoClicked();
 					
+					p.closeInventory();
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.LOCMISSION_NAME_EDIT),
 							(c,s) -> {
@@ -84,8 +91,6 @@ public class SubmitAtMission extends MissionType implements Manual {
 								return true;
 							}
 					));
-
-					PlayerTools.closeInventoryWithEvent(p);
 				}
 		));
 		putButton(16, MissionButton.simpleButton(
