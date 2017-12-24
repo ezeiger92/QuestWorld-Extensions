@@ -80,6 +80,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 				}
 			});
 		}
+		
 		new CustomBookOverlay("Quest", "TheBusyBiscuit", lore).open(p);
 	}
 	

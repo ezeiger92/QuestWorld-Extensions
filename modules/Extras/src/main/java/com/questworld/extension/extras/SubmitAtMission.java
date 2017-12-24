@@ -37,7 +37,7 @@ public class SubmitAtMission extends MissionType implements Manual {
 			locationName = Text.stringOf(location);
 		
 		return "&7Submit "+instance.getAmount()+"x "
-				+ Text.niceName(instance.getItem().getType().name())
+				+ Text.itemName(instance.getItem())
 				+ " at " + locationName;
 	}
 

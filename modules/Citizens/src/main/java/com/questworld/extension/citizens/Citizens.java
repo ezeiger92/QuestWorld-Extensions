@@ -25,13 +25,23 @@ public class Citizens extends QuestExtension {
 		return CitizensAPI.getNPCRegistry().getById(id);
 	}
 	
+	public static class CitizensLib extends QuestExtension {
+		public CitizensLib() {
+			super("Citizens"/*, "CS-CoreLib"*/);
+		}
+		
+		@Override
+		protected void initialize(Plugin parent) {
+			setMissionTypes(new CitizenAcceptQuestMission());
+		}
+	}
+	
 	public Citizens() {
-		super("Citizens", "CS-CoreLib");
+		super("Citizens");
 		setMissionTypes(
 			new CitizenInteractMission(),
 			new CitizenSubmitMission(),
-			new CitizenKillMission(),
-			new CitizenAcceptQuestMission());
+			new CitizenKillMission());
 	}
 	
 	@Override
