@@ -43,12 +43,12 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	}
 	
 	private void book(Player p, NPC npc, MissionEntry result) {
-		book(p, npc, result);
+		book(p, npc, result, false);
 	}
 	
 	private void book(Player p, NPC npc, MissionEntry result, boolean back) {
 		TellRawMessage lore = new TellRawMessage();
-		lore.addText(npc.getName() + ":\n\n");
+		lore.addText(npc.getName() + ": " + result.getMission().getQuest().getName() + "\n\n");
 		lore.addText(Text.colorize(result.getMission().getDescription()));
 		lore.color(ChatColor.DARK_AQUA);
 		lore.addText("\n\n    ");
@@ -104,7 +104,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		lore.addText("  Available Quests:\n\n");
 		
 		for(MissionEntry entry : available) {
-			lore.addText("    " + "" + "\n");
+			lore.addText("    " + entry.getMission().getQuest().getName() + "\n");
 			lore.addHoverEvent(HoverAction.SHOW_TEXT, String.join("\n", Text.wrap(32, 
 					Text.colorize(entry.getMission().getDescription())
 					)));

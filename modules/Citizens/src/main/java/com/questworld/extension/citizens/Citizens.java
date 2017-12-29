@@ -1,7 +1,7 @@
 package com.questworld.extension.citizens;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestExtension;
@@ -17,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class Citizens extends QuestExtension {
+	private static HashSet<MissionType> types = new HashSet<>();
+	
 	public static NPC npcFrom(IMission instance) {
 		return npcFrom(instance.getCustomInt());
 	}
@@ -27,12 +29,15 @@ public class Citizens extends QuestExtension {
 	
 	public static class CitizensLib extends QuestExtension {
 		public CitizensLib() {
-			super("Citizens"/*, "CS-CoreLib"*/);
+			super("Citizens", "CS-CoreLib");
 		}
 		
 		@Override
 		protected void initialize(Plugin parent) {
 			setMissionTypes(new CitizenAcceptQuestMission());
+			
+			for(MissionType type : getMissionTypes())
+				types.add(type);
 		}
 	}
 	
@@ -42,6 +47,9 @@ public class Citizens extends QuestExtension {
 			new CitizenInteractMission(),
 			new CitizenSubmitMission(),
 			new CitizenKillMission());
+		
+		for(MissionType type : getMissionTypes())
+			types.add(type);
 	}
 	
 	@Override
@@ -52,27 +60,32 @@ public class Citizens extends QuestExtension {
 			
 			@Override
 			public void run() {
-				MissionType[] missions = getMissionTypes();
-				for(int i = 0; i < missions.length; ++i)
-					for(IMission mission : QuestWorld.getViewer().getMissionsOf(missions[i])) {
+				HashSet<Integer> shown = new HashSet<>();
+				
+				for(MissionType type : types)
+					for(IMission mission : QuestWorld.getViewer().getMissionsOf(type)) {
 						NPC npc = npcFrom(mission);
 						if (npc != null && npc.getEntity() != null) {
-							List<Player> players = new ArrayList<Player>();
+							ArrayList<Player> players = new ArrayList<>();
 							
 							for (Entity n: npc.getEntity().getNearbyEntities(20D, 8D, 20D)) {
-								if (n instanceof Player) {
+								if (n instanceof Player && ((Player)n).isOnline()) {
 									IPlayerStatus manager = QuestWorld.getPlayerStatus((Player)n);
 									if (manager.isMissionActive(mission)) {
 										players.add((Player) n);
 									}
 								}
 							}
-							for(Player p : players) {
-								p.spawnParticle(Particle.VILLAGER_HAPPY, npc.getEntity().getLocation().add(0, 1, 0), 20, 0.5, 0.7, 0.5, 0);
+							
+							if(!shown.contains(npc.getEntity().getEntityId())) {
+								shown.add(npc.getEntity().getEntityId());
+								for(Player p : players) {
+									p.spawnParticle(Particle.VILLAGER_HAPPY, npc.getEntity().getLocation().add(0, 1, 0), 20, 0.5, 0.7, 0.5, 0);
+								}
 							}
 						}
 					}
 			}
-		}, 0L, 12L);
+		}, 0L, 32L);
 	}
 }
