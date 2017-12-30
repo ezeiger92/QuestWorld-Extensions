@@ -8,7 +8,6 @@ import me.mrCookieSlime.QuestWorld.api.QuestExtension;
 import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IPlayerStatus;
-import me.mrCookieSlime.QuestWorld.util.Log;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 
@@ -60,15 +59,12 @@ public class Citizens extends QuestExtension {
 	
 	@Override
 	public void onSave() {
-		Log.info("Saving citizens extension config");
 		getResourceLoader().saveConfigNoexcept(config, "config-citizens.yml", true);
 	}
 	
 	@Override
 	public void onReload() {
-		Log.info("Loading citizens extension config");
 		config = getConfiguration("config-citizens.yml");
-		Log.info(config.getString("npc_particles.type"));
 	}
 	
 	@Override

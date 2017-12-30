@@ -12,6 +12,7 @@ import me.mrCookieSlime.QuestWorld.api.contract.IMission;
 import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
 import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
 import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
+import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
 import me.mrCookieSlime.QuestWorld.util.PlayerTools;
 import me.mrCookieSlime.QuestWorld.util.Text;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -46,7 +47,7 @@ public class CitizenSubmitMission extends MissionType implements Listener {
 			IMission mission = r.getMission();
 			
 			if(mission.getCustomInt() != e.getNPC().getId()
-					|| !hand.isSimilar(mission.getItem()))
+					|| !ItemBuilder.compareItems(hand, mission.getItem()))
 				continue;
 			
 			int amount = hand.getAmount();
