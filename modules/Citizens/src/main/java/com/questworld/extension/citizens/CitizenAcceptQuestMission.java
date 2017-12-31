@@ -48,6 +48,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	
 	private void book(Player p, NPC npc, MissionEntry result, boolean back) {
 		TellRawMessage lore = new TellRawMessage();
+		
 		lore.addText(npc.getName() + ": " + result.getMission().getQuest().getName() + "\n\n");
 		lore.addText(Text.colorize(result.getMission().getDescription()));
 		lore.color(ChatColor.DARK_AQUA);
@@ -61,6 +62,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 				result.addProgress(1);
 			}
 		});
+		
 		lore.addText("      ");
 		lore.addText(Text.colorize("&7( &4&l\u2718 &7)"));
 		if(back) {
@@ -105,6 +107,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		
 		for(MissionEntry entry : available) {
 			lore.addText("    " + entry.getMission().getQuest().getName() + "\n");
+			
 			lore.addHoverEvent(HoverAction.SHOW_TEXT, String.join("\n", Text.wrap(32, 
 					Text.colorize(entry.getMission().getDescription())
 					)));
@@ -127,6 +130,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	
 	@Override
 	protected void layoutMenu(IMissionState changes) {
+		putButton(10, CitizenButton.select(changes));
 		putButton(11, MissionButton.simpleButton(changes,
 				new ItemBuilder(Material.NAME_TAG).wrapText(
 						"&rQuest Description",

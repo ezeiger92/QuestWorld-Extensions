@@ -39,6 +39,11 @@ public class ClickBlockMission extends MissionType implements Listener {
 		transparent.add(Material.WATER);
 		transparent.add(Material.LAVA);
 	}
+	
+	String blockLoc(Location l) {
+		return l.getBlockY() + ", " + l.getBlockZ()
+		+ " in " + l.getWorld().getName();
+	}
 
 	@Override
 	protected String userInstanceDescription(IMission instance) {
@@ -58,16 +63,18 @@ public class ClickBlockMission extends MissionType implements Listener {
 		if(changes != null) {
 			event.setCancelled(true);
 			if(event.getClickedBlock() == null) {
-				p.sendMessage("Cancelled");
+				p.sendMessage("&4Quest World &a> Cancelled, keeping old block");
 			}
 			else {
-				p.sendMessage("changing");
-				changes.setLocation(event.getClickedBlock().getLocation());
+				Location l = event.getClickedBlock().getLocation();
+				changes.setLocation(l);
 				if(changes.apply()) {
-					p.sendMessage("changed");
+					p.sendMessage("&4Quest World &a> Selected block at " + blockLoc(l));
 				}
 			}
 			QuestBook.openQuestMissionEditor(p, changes.getSource());
+			event.setCancelled(true);
+			return;
 		}
 		
 		if(event.getClickedBlock() != null) {
@@ -88,12 +95,15 @@ public class ClickBlockMission extends MissionType implements Listener {
 	protected void layoutMenu(IMissionState changes) {
 		putButton(10, MissionButton.simpleButton(
 				changes,
-				new ItemStack(Material.BEDROCK),
+				new ItemBuilder(Material.MAP).wrapText(
+						"&7Location: " + blockLoc(changes.getLocation()),
+						"",
+						"&e> Click to change block location").get(),
 				event -> {
 					Player p = (Player) event.getWhoClicked();
 					p.closeInventory();
 					waiting.put(p.getUniqueId(), changes);
-					p.sendMessage("Click a block to set the location, or click air to cancel");
+					p.sendMessage("&4Quest World &7> Right click a block to select it, or click air to cancel");
 				}
 		));
 		

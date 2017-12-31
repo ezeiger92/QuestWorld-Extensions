@@ -117,13 +117,13 @@ public class Citizens extends QuestExtension {
 								}
 							}
 							
-							if(!shown.contains(npc.getEntity().getEntityId())) {
-								shown.add(npc.getEntity().getEntityId());
+							//if(!shown.contains(npc.getId())) {
+								shown.add(npc.getId());
 								for(Player p : players) {
 									p.spawnParticle(particleType, npc.getEntity().getLocation().add(0, 1, 0),
 											count, spreadX, spreadY, spreadZ, extra);
 								}
-							}
+							//}
 						}
 					}
 			}
