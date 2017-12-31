@@ -36,6 +36,11 @@ public class Citizens extends QuestExtension {
 		}
 		
 		@Override
+		public String getName() {
+			return "Citizens-AcceptQuest";
+		}
+		
+		@Override
 		protected void initialize(Plugin parent) {
 			setMissionTypes(new CitizenAcceptQuestMission());
 			
