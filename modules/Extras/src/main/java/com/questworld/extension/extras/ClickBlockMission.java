@@ -40,15 +40,16 @@ public class ClickBlockMission extends MissionType implements Listener {
 		transparent.add(Material.LAVA);
 	}
 	
-	String blockLoc(Location l) {
-		return l.getBlockY() + ", " + l.getBlockZ()
-		+ " in " + l.getWorld().getName();
+	private String blockLoc(Location l) {
+		if(l.getWorld() != null)
+			return l.getBlockY() + ", " + l.getBlockZ()
+			+ " in " + l.getWorld().getName();
+		return "Unknown world";
 	}
 
 	@Override
 	protected String userInstanceDescription(IMission instance) {
-		return "Click block at " + instance.getLocation().toVector().toString()
-				+ " in " + instance.getLocation().getWorld().getName();
+		return "Click block at " + blockLoc(instance.getLocation());
 	}
 
 	@Override
