@@ -2,15 +2,14 @@ package com.questworld.extension.citizens;
 
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.CSCoreLibPlugin.PlayerRunnable;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawMessage;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawMessage.HoverAction;
+import static me.mrCookieSlime.QuestWorld.util.json.Prop.*;
+
+import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawString;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.CustomBookOverlay;
 import me.mrCookieSlime.QuestWorld.api.QuestWorld;
 import me.mrCookieSlime.QuestWorld.api.SinglePrompt;
@@ -23,6 +22,7 @@ import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
 import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
 import me.mrCookieSlime.QuestWorld.util.PlayerTools;
 import me.mrCookieSlime.QuestWorld.util.Text;
+import me.mrCookieSlime.QuestWorld.util.json.JsonBlob;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 
@@ -47,43 +47,23 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	}
 	
 	private void book(Player p, NPC npc, MissionEntry result, boolean back) {
-		TellRawMessage lore = new TellRawMessage();
+		String legacy = Text.colorize(npc.getName() + ": " +
+				result.getMission().getQuest().getName() + "\n\n" +
+				result.getMission().getDescription() + "\n\n    ");
 		
-		lore.addText(npc.getName() + ": " + result.getMission().getQuest().getName() + "\n\n");
-		lore.addText(Text.colorize(result.getMission().getDescription()));
-		lore.color(ChatColor.DARK_AQUA);
-		lore.addText("\n\n    ");
-		lore.addText(Text.colorize("&7( &a&l\u2714 &7)"));
-		lore.addHoverEvent(HoverAction.SHOW_TEXT, Text.colorize("&7Click to accept this Quest"));
-		lore.addClickEvent(new PlayerRunnable(3) {
-			
-			@Override
-			public void run(Player p) {
-				result.addProgress(1);
-			}
-		});
+		JsonBlob blob = JsonBlob.fromLegacy(legacy, BLACK)
+				.addLegacy(Text.colorize("&7( &a&l\u2714 &7)"), BLACK, 
+						HOVER.TEXT("Click to accept this Quest", GRAY),
+						CLICK.RUN( () -> result.addProgress(1) ))
+				.add("      ")
+				.addLegacy(Text.colorize("&7( &4&l\u2718 &7)"), BLACK, 
+						HOVER.TEXT(back ? "Click to go back" : "Click to do this Quest later", GRAY),
+						CLICK.RUN( () -> {
+							if(back)
+								list(p, npc);
+						}));
 		
-		lore.addText("      ");
-		lore.addText(Text.colorize("&7( &4&l\u2718 &7)"));
-		if(back) {
-			lore.addHoverEvent(HoverAction.SHOW_TEXT, Text.colorize("&7Click to go back"));
-			lore.addClickEvent(new PlayerRunnable(3) {
-				@Override
-				public void run(Player p) {
-					list(p, npc);
-				}
-			});
-		}
-		else {
-			lore.addHoverEvent(HoverAction.SHOW_TEXT, Text.colorize("&7Click to do this Quest later"));
-			lore.addClickEvent(new PlayerRunnable(3) {
-				@Override
-				public void run(Player p) {
-				}
-			});
-		}
-		
-		new CustomBookOverlay("Quest", "TheBusyBiscuit", lore).open(p);
+		new CustomBookOverlay("Quest", "TheBusyBiscuit", new TellRawString(blob.toString())).open(p);
 	}
 	
 	private void list(Player p, NPC npc) {
@@ -101,25 +81,19 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 			return;
 		}
 		
-		TellRawMessage lore = new TellRawMessage();
-		lore.addText(npc.getName() + ":\n");
-		lore.addText("  Available Quests:\n\n");
+		JsonBlob blob = new JsonBlob("Available Quests:\n", BLACK);
 		
 		for(MissionEntry entry : available) {
-			lore.addText("    " + entry.getMission().getQuest().getName() + "\n");
-			
-			lore.addHoverEvent(HoverAction.SHOW_TEXT, String.join("\n", Text.wrap(32, 
-					Text.colorize(entry.getMission().getDescription())
-					)));
-			lore.addClickEvent(new PlayerRunnable(3) {
-				
-				@Override
-				public void run(Player p) {
-					book(p, npc, entry, true);
-				}
-			});
+			blob.add("+ ", DARK_BLUE)
+				.addLegacy(Text.colorize(entry.getMission().getQuest().getName() + "\n"), BLACK,
+					HOVER.TEXT(String.join("\n", Text.wrap(32, 
+							Text.colorize(entry.getMission().getDescription())
+					))),
+					CLICK.RUN(() -> {
+						book(p, npc, entry, true);
+					}));
 		}
-		new CustomBookOverlay("Quest", "TheBusyBiscuit", lore).open(p);
+		new CustomBookOverlay("Quest", "TheBusyBiscuit", new TellRawString(blob.toString())).open(p);
 	}
 	
 	@Override
@@ -146,7 +120,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.MISSION_DESC_EDIT),
 							(c,s) -> {
-								changes.setDescription(Text.decolor(Text.colorize(s)));
+								changes.setDescription(Text.colorize(s));
 								if(changes.apply()) {
 									PlayerTools.sendTranslation(p, true, Translation.MISSION_DESC_SET, changes.getText(), changes.getDescription());
 								}
