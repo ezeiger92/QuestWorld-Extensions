@@ -87,7 +87,7 @@ public class BalanceMission extends MissionType implements Ticking {
 						"&cRight Click to remove format").get(),
 				event -> {
 					if(event.isRightClick())
-						changes.setCustomString(null);
+						changes.setCustomString("");
 				}
 		));
 	}

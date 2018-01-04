@@ -54,11 +54,11 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		JsonBlob blob = JsonBlob.fromLegacy(legacy, BLACK)
 				.addLegacy(Text.colorize("&7( &a&l\u2714 &7)"), BLACK, 
 						HOVER.TEXT("Click to accept this Quest", GRAY),
-						CLICK.RUN( () -> result.addProgress(1) ))
+						CLICK.RUN(p, () -> result.addProgress(1) ))
 				.add("      ")
 				.addLegacy(Text.colorize("&7( &4&l\u2718 &7)"), BLACK, 
 						HOVER.TEXT(back ? "Click to go back" : "Click to do this Quest later", GRAY),
-						CLICK.RUN( () -> {
+						CLICK.RUN(p, () -> {
 							if(back)
 								list(p, npc);
 						}));
@@ -89,7 +89,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 					HOVER.TEXT(String.join("\n", Text.wrap(32, 
 							Text.colorize(entry.getMission().getDescription())
 					))),
-					CLICK.RUN(() -> {
+					CLICK.RUN(p, () -> {
 						book(p, npc, entry, true);
 					}));
 		}
@@ -120,6 +120,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.MISSION_DESC_EDIT),
 							(c,s) -> {
+								s = Text.colorize(s);
 								changes.setDescription(Text.colorize(s));
 								if(changes.apply()) {
 									PlayerTools.sendTranslation(p, true, Translation.MISSION_DESC_SET, changes.getText(), changes.getDescription());
