@@ -107,15 +107,29 @@ public class ClickBlockMission extends MissionType implements Listener {
 					p.sendMessage("&4Quest World &7> Right click a block to select it, or click air to cancel");
 				}
 		));
-		
+
+		String name = changes.getCustomString();
 		putButton(11, MissionButton.simpleButton(
 				changes,
 				new ItemBuilder(Material.NAME_TAG).wrapText(
-						"&r" + changes.getCustomString(),
+						"&7Location name: &r&o" + (name.length() > 0 ? name : "-none-"),
 						 "",
-						 "&e> Give your Location a Name").get(),
+						 "&e> Give your location a name",
+						 "",
+						 "&rLeft click: Enter name",
+						 "&rRight click: Reset name").get(),
 				event -> {
 					Player p = (Player)event.getWhoClicked();
+					
+					if(event.isRightClick()) {
+						changes.setCustomString("");
+						
+						if(changes.apply()) {
+							PlayerTools.sendTranslation(p, true, Translation.LOCMISSION_NAME_SET);
+							QuestBook.openQuestMissionEditor(p, changes.getSource());
+						}
+						return;
+					}
 					
 					p.closeInventory();
 					PlayerTools.promptInput(p, new SinglePrompt(
@@ -138,10 +152,10 @@ public class ClickBlockMission extends MissionType implements Listener {
 				new ItemBuilder(Material.COMPASS).wrapText(
 						"&7Radius: &a" + changes.getCustomInt(),
 						"",
-						"&rLeft Click: &e+1",
-						"&rRight Click: &e-1",
-						"&rShift + Left Click: &e+16",
-						"&rShift + Right Click: &e-16").get(),
+						"&rLeft click: &e+1",
+						"&rRight click: &e-1",
+						"&rShift left click: &e+16",
+						"&rShift right click: &e-16").get(),
 				event -> {
 					int amount = MissionButton.clickNumber(changes.getCustomInt(), 16, event);
 					changes.setCustomInt(Math.max(amount, 1));

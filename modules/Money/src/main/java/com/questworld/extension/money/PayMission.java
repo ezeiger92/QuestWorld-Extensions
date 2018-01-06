@@ -22,13 +22,17 @@ public class PayMission extends MissionType implements Manual {
 
 	@Override
 	protected String userInstanceDescription(IMission instance) {
-		String currency = "dollars,1:dollar";
-		if(instance.getCustomString() != null)
-			currency = instance.getCustomString();
-		
-		currency = Money.formatCurrency(currency, instance.getAmount());
+		String currency = Money.formatCurrency(instance.getCustomString(), instance.getAmount());
 		
 		return "&7Give " + instance.getAmount() + " " + currency;
+	}
+	
+	@Override
+	public void validate(IMissionState state) {
+		if(state.getCustomString().length() == 0)
+			state.setCustomString("dollars,1:dollar");
+		
+		state.apply();
 	}
 
 	@Override

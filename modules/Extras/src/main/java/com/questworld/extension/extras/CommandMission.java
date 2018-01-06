@@ -27,7 +27,7 @@ public class CommandMission extends MissionType implements Listener {
 
 	@Override
 	protected String userInstanceDescription(IMission instance) {
-		return "Use " + (instance.getCustomString().length() == 0 ? " a command" : instance.getCustomString());
+		return "Use " + instance.getCustomString();
 	}
 
 	@Override
@@ -46,42 +46,41 @@ public class CommandMission extends MissionType implements Listener {
 	}
 	
 	@Override
+	public void validate(IMissionState state) {
+		if(!state.getCustomString().startsWith("/"))
+			state.setCustomString("/command");
+		
+		state.apply();
+	}
+	
+	@Override
 	protected void layoutMenu(IMissionState changes) {
+		String command = changes.getCustomString();
 		putButton(10, MissionButton.simpleButton(
 				changes,
 				new ItemBuilder(Material.NAME_TAG).wrapText(
-						"&dCommand",
-						changes.getCustomString().length()==0 ? "&cNo command set" : "&a"+changes.getCustomString(),
+						"&7Command: &r&o" + (command.length() > 0 ? "&a" + command : "&r&o-none-"),
 						"",
-						"&eLeft Click to Set Command",
-						"&eRight Click to Clear Command"
-				).get(),
+						"&e> Click to set command").get(),
 				event -> {
-					if(event.isRightClick()) {
-						changes.setCustomString("");
-					}
-					else {
-						Player p = (Player)event.getWhoClicked();
-						p.closeInventory();
-						PlayerTools.promptCommand(
-								p,
-								new SinglePrompt("&aEnter a command (/# to cancel):", (c,s) -> {
-									
-									if(!s.startsWith("/#")) {
-										p.sendMessage("Setting command to "+s);
-										changes.setCustomString(s);
-										if(changes.apply()) {
-											
-										}
-									}
-									else
-										p.sendMessage("Cancelling...");
-									
-									QuestBook.openQuestMissionEditor(p, changes.getSource());
-									return true;
+					Player p = (Player)event.getWhoClicked();
+					p.closeInventory();
+					PlayerTools.promptCommand(
+							p,
+							new SinglePrompt("&aEnter a command (/exit to cancel):", (c,s) -> {
+								
+								if(!s.equalsIgnoreCase("/exit")) {
+									p.sendMessage("Setting command to "+s);
+									changes.setCustomString(s);
+									changes.apply();
 								}
-						));
-					}
+								else
+									p.sendMessage("Cancelling...");
+								
+								QuestBook.openQuestMissionEditor(p, changes.getSource());
+								return true;
+							}
+					));
 				}
 		));
 	}

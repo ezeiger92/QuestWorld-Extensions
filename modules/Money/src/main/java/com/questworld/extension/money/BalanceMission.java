@@ -48,11 +48,7 @@ public class BalanceMission extends MissionType implements Ticking {
 	
 	@Override
 	protected String userInstanceDescription(IMission instance) {
-		String currency = "dollars,1:dollar";
-		if(instance.getCustomString() != null && instance.getCustomString().length() != 0)
-			currency = instance.getCustomString();
-		
-		currency = Money.formatCurrency(currency, instance.getAmount());
+		String currency = Money.formatCurrency(instance.getCustomString(), instance.getAmount());
 		String checkType = CheckType.stringAt(instance.getCustomInt());
 		
 		return "&7Have " + checkType.toLowerCase() + " " + instance.getAmount() + " " + currency;
@@ -61,6 +57,14 @@ public class BalanceMission extends MissionType implements Ticking {
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
 		return getSelectorItem().clone();
+	}
+	
+	@Override
+	public void validate(IMissionState state) {
+		if(state.getCustomString().length() == 0)
+			state.setCustomString("dollars,1:dollar");
+		
+		state.apply();
 	}
 	
 	@Override
