@@ -47,9 +47,9 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	}
 	
 	private void book(Player p, NPC npc, MissionEntry result, boolean back) {
-		String legacy = Text.colorize(npc.getName() + ": " +
-				result.getMission().getQuest().getName() + "\n\n" +
-				result.getMission().getDescription() + "\n\n    ");
+		String legacy = Text.colorize(npc.getName() + "&r: " +
+				result.getMission().getQuest().getName() + "&r\n\n" +
+				result.getMission().getDescription() + "\n\n    ").replace("\\\\n", "\n");
 		
 		JsonBlob blob = JsonBlob.fromLegacy(legacy, BLACK)
 				.addLegacy(Text.colorize("&7( &a&l\u2714 &7)"), BLACK, 
@@ -85,7 +85,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		
 		for(MissionEntry entry : available) {
 			blob.add("+ ", DARK_BLUE)
-				.addLegacy(Text.colorize(entry.getMission().getQuest().getName() + "\n"), BLACK,
+				.addLegacy(Text.colorize(entry.getMission().getQuest().getName()).replaceAll("\\\\n", "\n") + "\n", BLACK,
 					HOVER_TEXT(String.join("\n", Text.wrap(32, 
 							Text.colorize(entry.getMission().getDescription())
 					))),
