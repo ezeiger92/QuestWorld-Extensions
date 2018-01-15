@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import com.wasteofplastic.askyblock.ASkyBlockAPI;
-import com.wasteofplastic.askyblock.events.IslandLevelEvent;
+import com.wasteofplastic.askyblock.events.IslandPostLevelEvent;
 
 import me.mrCookieSlime.QuestWorld.api.MissionType;
 import me.mrCookieSlime.QuestWorld.api.QuestWorld;
@@ -34,14 +34,14 @@ public class ASkyBlockLevelMission extends MissionType implements Listener, Tick
 	}
 	
 	@EventHandler
-	public void onWin(final IslandLevelEvent e) {
+	public void onWin(final IslandPostLevelEvent e) {
 		for(MissionEntry r : QuestWorld.getMissionEntries(this, Bukkit.getOfflinePlayer(e.getPlayer())))
-			r.setProgress(e.getLevel());
+			r.setProgress((int)e.getLongLevel());
 	}
 
 	@Override
 	public void onManual(Player player, MissionEntry entry) {
-		entry.setProgress(ASkyBlockAPI .getInstance().getIslandLevel(player.getUniqueId()));
+		entry.setProgress((int)ASkyBlockAPI.getInstance().getLongIslandLevel(player.getUniqueId()));
 	}
 	
 	@Override
