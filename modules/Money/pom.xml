@@ -4,6 +4,7 @@
 		<groupId>com.questworld.extensions</groupId>
 		<artifactId>QuestWorld-Extensions</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	<artifactId>QW-Money</artifactId>
 	<dependencies>

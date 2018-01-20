@@ -33,7 +33,7 @@
 		<!-- Bukkit/Spigot repo -->
 		<repository>
 			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
 		</repository>
 		<!-- Vault repo -->
 		<repository>
@@ -44,6 +44,10 @@
 		<repository>
 			<id>local-repo</id>
 			<url>file://${basedir}\..\..\repo</url>
+		</repository>
+		<repository>
+			<id>votifier-repo</id>
+			<url>http://dl.bintray.com/nuvotifier/maven</url>
 		</repository>
 	</repositories>
 	<dependencyManagement>
@@ -101,8 +105,8 @@
 			<!-- Votifier dep -->
 			<dependency>
 				<groupId>com.vexsoftware</groupId>
-				<artifactId>votifier</artifactId>
-				<version>1.9</version>
+				<artifactId>nuvotifier-universal</artifactId>
+				<version>2.3.4</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>
