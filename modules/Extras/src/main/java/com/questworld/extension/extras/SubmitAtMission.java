@@ -59,7 +59,8 @@ public class SubmitAtMission extends MissionType implements Manual {
 	
 	@Override
 	public void validate(IMissionState missionState) {
-		locate.validate(missionState);
+		if(missionState.getCustomInt() <= 0)
+			missionState.setCustomInt(3);
 		submit.validate(missionState);
 	}
 	
