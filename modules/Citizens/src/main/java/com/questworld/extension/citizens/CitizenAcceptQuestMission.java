@@ -49,7 +49,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	private void book(Player p, NPC npc, MissionEntry result, boolean back) {
 		String legacy = Text.colorize(npc.getName() + "&r: " +
 				result.getMission().getQuest().getName() + "&r\n\n" +
-				result.getMission().getDescription() + "\n\n    ").replace("\\\\n", "\n");
+				result.getMission().getDescription() + "\n\n    ").replace("\\n", "\n");
 		
 		JsonBlob blob = JsonBlob.fromLegacy(legacy, BLACK)
 				.addLegacy(Text.colorize("&7( &a&l\u2714 &7)"), BLACK, 
@@ -85,7 +85,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 		
 		for(MissionEntry entry : available) {
 			blob.add("+ ", DARK_BLUE)
-				.addLegacy(Text.colorize(entry.getMission().getQuest().getName()).replaceAll("\\\\n", "\n") + "\n", BLACK,
+				.addLegacy(Text.colorize(entry.getMission().getQuest().getName()).replace("\\n", "\n") + "\n", BLACK,
 					HOVER_TEXT(String.join("\n", Text.wrap(32, 
 							Text.colorize(entry.getMission().getDescription())
 					))),
@@ -109,7 +109,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 				new ItemBuilder(Material.NAME_TAG).wrapText(
 						"&rQuest Description",
 						"",
-						changes.getDescription(),
+						changes.getDescription().replace("\n", "\\n"),
 						"",
 						"&e> Edit the Quest's Description",
 						"&7(Color Codes supported)").get(),
@@ -120,7 +120,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.MISSION_DESC_EDIT),
 							(c,s) -> {
-								changes.setDescription(Text.colorize(s));
+								changes.setDescription(Text.deserializeColor(s));
 								if(changes.apply()) {
 									PlayerTools.sendTranslation(p, true, Translation.MISSION_DESC_SET, changes.getText(), changes.getDescription());
 								}

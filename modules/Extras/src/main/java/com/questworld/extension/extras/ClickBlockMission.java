@@ -64,13 +64,13 @@ public class ClickBlockMission extends MissionType implements Listener {
 		if(changes != null) {
 			event.setCancelled(true);
 			if(event.getClickedBlock() == null) {
-				p.sendMessage("&4Quest World &a> Cancelled, keeping old block");
+				p.sendMessage(Text.colorize("&4Quest World &a> Cancelled, keeping old block"));
 			}
 			else {
 				Location l = event.getClickedBlock().getLocation();
 				changes.setLocation(l);
 				if(changes.apply()) {
-					p.sendMessage("&4Quest World &a> Selected block at " + blockLoc(l));
+					p.sendMessage(Text.colorize("&4Quest World &a> Selected block at " + blockLoc(l)));
 				}
 			}
 			QuestBook.openQuestMissionEditor(p, changes.getSource());
@@ -104,7 +104,7 @@ public class ClickBlockMission extends MissionType implements Listener {
 					Player p = (Player) event.getWhoClicked();
 					p.closeInventory();
 					waiting.put(p.getUniqueId(), changes);
-					p.sendMessage("&4Quest World &7> Right click a block to select it, or click air to cancel");
+					p.sendMessage(Text.colorize("&4Quest World &7> Right click a block to select it, or click air to cancel"));
 				}
 		));
 
