@@ -59,8 +59,10 @@ public class SubmitAtMission extends MissionType implements Manual {
 	
 	@Override
 	public void validate(IMissionState missionState) {
-		if(missionState.getCustomInt() <= 0)
+		if(missionState.getCustomInt() <= 0) {
 			missionState.setCustomInt(3);
+			missionState.apply();
+		}
 		submit.validate(missionState);
 	}
 	
@@ -82,7 +84,7 @@ public class SubmitAtMission extends MissionType implements Manual {
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.LOCMISSION_NAME_EDIT),
 							(c,s) -> {
-								changes.setCustomString(Text.colorize(s));
+								changes.setCustomString(Text.deserializeNewline(Text.colorize(s)));
 								
 								if(changes.apply()) {
 									PlayerTools.sendTranslation(p, true, Translation.LOCMISSION_NAME_SET);

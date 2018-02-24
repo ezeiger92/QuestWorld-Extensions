@@ -29,10 +29,10 @@ public class PayMission extends MissionType implements Manual {
 	
 	@Override
 	public void validate(IMissionState state) {
-		if(state.getCustomString().length() == 0)
+		if(state.getCustomString().length() == 0) {
 			state.setCustomString("dollars,1:dollar");
-		
-		state.apply();
+			state.apply();
+		}
 	}
 
 	@Override

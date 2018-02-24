@@ -79,10 +79,10 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 	
 	@Override
 	public void validate(IMissionState missionState) {
-		if(!crops.containsKey(missionState.getItem().getType()))
+		if(!crops.containsKey(missionState.getItem().getType())) {
 			missionState.setItem(new ItemStack(Material.WHEAT));
-		
-		missionState.apply();
+			missionState.apply();
+		}
 	}
 	
 	@Override

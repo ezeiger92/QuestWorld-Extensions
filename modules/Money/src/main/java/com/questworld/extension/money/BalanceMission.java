@@ -61,10 +61,10 @@ public class BalanceMission extends MissionType implements Ticking {
 	
 	@Override
 	public void validate(IMissionState state) {
-		if(state.getCustomString().length() == 0)
+		if(state.getCustomString().length() == 0) {
 			state.setCustomString("dollars,1:dollar");
-		
-		state.apply();
+			state.apply();
+		}
 	}
 	
 	@Override

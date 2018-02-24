@@ -120,7 +120,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.MISSION_DESC_EDIT),
 							(c,s) -> {
-								changes.setDescription(Text.deserializeColor(s));
+								changes.setDescription(Text.deserializeNewline(Text.colorize(s)));
 								if(changes.apply()) {
 									PlayerTools.sendTranslation(p, true, Translation.MISSION_DESC_SET, changes.getText(), changes.getDescription());
 								}

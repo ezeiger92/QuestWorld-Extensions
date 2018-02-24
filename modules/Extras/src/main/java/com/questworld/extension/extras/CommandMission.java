@@ -47,10 +47,10 @@ public class CommandMission extends MissionType implements Listener {
 	
 	@Override
 	public void validate(IMissionState state) {
-		if(!state.getCustomString().startsWith("/"))
+		if(!state.getCustomString().startsWith("/")) {
 			state.setCustomString("/command");
-		
-		state.apply();
+			state.apply();
+		}
 	}
 	
 	@Override

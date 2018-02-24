@@ -135,7 +135,7 @@ public class ClickBlockMission extends MissionType implements Listener {
 					PlayerTools.promptInput(p, new SinglePrompt(
 							PlayerTools.makeTranslation(true, Translation.LOCMISSION_NAME_EDIT),
 							(c,s) -> {
-								changes.setCustomString(Text.colorize(s));
+								changes.setCustomString(Text.deserializeNewline(Text.colorize(s)));
 								
 								if(changes.apply()) {
 									PlayerTools.sendTranslation(p, true, Translation.LOCMISSION_NAME_SET);
