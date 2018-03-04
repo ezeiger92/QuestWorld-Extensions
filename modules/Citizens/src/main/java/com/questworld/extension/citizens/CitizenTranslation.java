@@ -1,6 +1,6 @@
 package com.questworld.extension.citizens;
 
-import me.mrCookieSlime.QuestWorld.api.Translator;
+import com.questworld.api.Translator;
 
 public enum CitizenTranslation implements Translator {
 	CITIZEN_NPC_EDIT("editor.link-citizen"),

@@ -2,7 +2,7 @@ package com.questworld.extension.extras;
 
 import org.bukkit.plugin.Plugin;
 
-import me.mrCookieSlime.QuestWorld.api.QuestExtension;
+import com.questworld.api.QuestExtension;
 
 public class Extras extends QuestExtension {
 	@Override

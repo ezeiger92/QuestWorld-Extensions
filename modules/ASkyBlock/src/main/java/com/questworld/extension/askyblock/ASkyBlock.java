@@ -1,6 +1,6 @@
 package com.questworld.extension.askyblock;
 
-import me.mrCookieSlime.QuestWorld.api.QuestExtension;
+import com.questworld.api.QuestExtension;
 
 public class ASkyBlock extends QuestExtension {
 	public ASkyBlock() {

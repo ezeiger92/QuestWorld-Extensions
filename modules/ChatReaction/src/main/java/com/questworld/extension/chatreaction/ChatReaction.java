@@ -1,6 +1,6 @@
 package com.questworld.extension.chatreaction;
 
-import me.mrCookieSlime.QuestWorld.api.QuestExtension;
+import com.questworld.api.QuestExtension;
 
 public class ChatReaction extends QuestExtension {
 	public ChatReaction() {

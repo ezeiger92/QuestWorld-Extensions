@@ -4,14 +4,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.QuestWorld.api.MissionType;
-import me.mrCookieSlime.QuestWorld.api.Ticking;
-import me.mrCookieSlime.QuestWorld.api.contract.IMission;
-import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
-import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
-import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
-import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
-import me.mrCookieSlime.QuestWorld.util.Text;
+import com.questworld.api.MissionType;
+import com.questworld.api.Ticking;
+import com.questworld.api.contract.IMission;
+import com.questworld.api.contract.IMissionState;
+import com.questworld.api.contract.MissionEntry;
+import com.questworld.api.menu.MissionButton;
+import com.questworld.util.ItemBuilder;
+import com.questworld.util.Text;
+
 import net.milkbowl.vault.economy.Economy;
 
 public class BalanceMission extends MissionType implements Ticking {

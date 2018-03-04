@@ -2,11 +2,6 @@ package com.questworld.extension.citizens;
 
 import java.util.HashSet;
 
-import me.mrCookieSlime.QuestWorld.api.MissionType;
-import me.mrCookieSlime.QuestWorld.api.QuestExtension;
-import me.mrCookieSlime.QuestWorld.api.QuestWorld;
-import me.mrCookieSlime.QuestWorld.api.contract.IMission;
-import me.mrCookieSlime.QuestWorld.util.Pair;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 
@@ -21,6 +16,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.questworld.api.MissionType;
+import com.questworld.api.QuestExtension;
+import com.questworld.api.QuestWorld;
+import com.questworld.api.contract.IMission;
+import com.questworld.util.Pair;
+
 public class Citizens extends QuestExtension {
 	FileConfiguration config;
 	private int task = -1;
@@ -34,28 +35,10 @@ public class Citizens extends QuestExtension {
 		return CitizensAPI.getNPCRegistry().getById(id);
 	}
 	
-	public static class CitizensLib extends QuestExtension {
-		public CitizensLib() {
-			super("Citizens", "CS-CoreLib");
-		}
-		
-		@Override
-		public String getName() {
-			return "Citizens-AcceptQuest";
-		}
-		
-		@Override
-		protected void initialize(Plugin parent) {
-			setMissionTypes(new CitizenAcceptQuestMission());
-			
-			for(MissionType type : getMissionTypes())
-				types.add(type);
-		}
-	}
-	
 	public Citizens() {
 		super("Citizens");
 		setMissionTypes(
+			new CitizenAcceptQuestMission(),
 			new CitizenInteractMission(),
 			new CitizenSubmitMission(),
 			new CitizenKillMission());

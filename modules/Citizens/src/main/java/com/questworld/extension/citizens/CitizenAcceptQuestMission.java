@@ -1,5 +1,7 @@
 package com.questworld.extension.citizens;
 
+import static com.questworld.util.json.Prop.*;
+
 import java.util.ArrayList;
 
 import org.bukkit.Material;
@@ -7,22 +9,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import static me.mrCookieSlime.QuestWorld.util.json.Prop.*;
+import com.questworld.api.QuestWorld;
+import com.questworld.api.SinglePrompt;
+import com.questworld.api.Translation;
+import com.questworld.api.contract.IMission;
+import com.questworld.api.contract.IMissionState;
+import com.questworld.api.contract.MissionEntry;
+import com.questworld.api.menu.MissionButton;
+import com.questworld.api.menu.QuestBook;
+import com.questworld.util.ItemBuilder;
+import com.questworld.util.PlayerTools;
+import com.questworld.util.Text;
+import com.questworld.util.json.JsonBlob;
 
-import me.mrCookieSlime.CSCoreLibPlugin.general.Chat.TellRawString;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.CustomBookOverlay;
-import me.mrCookieSlime.QuestWorld.api.QuestWorld;
-import me.mrCookieSlime.QuestWorld.api.SinglePrompt;
-import me.mrCookieSlime.QuestWorld.api.Translation;
-import me.mrCookieSlime.QuestWorld.api.contract.IMission;
-import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
-import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
-import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
-import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
-import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
-import me.mrCookieSlime.QuestWorld.util.PlayerTools;
-import me.mrCookieSlime.QuestWorld.util.Text;
-import me.mrCookieSlime.QuestWorld.util.json.JsonBlob;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 
@@ -63,7 +62,7 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 								list(p, npc);
 						}));
 		
-		new CustomBookOverlay("Quest", "TheBusyBiscuit", new TellRawString(blob.toString())).open(p);
+		PlayerTools.sendBookView(p, blob.toString());
 	}
 	
 	private void list(Player p, NPC npc) {
@@ -93,7 +92,8 @@ public class CitizenAcceptQuestMission extends CitizenInteractMission {
 						book(p, npc, entry, true);
 					}));
 		}
-		new CustomBookOverlay("Quest", "TheBusyBiscuit", new TellRawString(blob.toString())).open(p);
+		
+		PlayerTools.sendBookView(p, blob.toString());
 	}
 	
 	@Override

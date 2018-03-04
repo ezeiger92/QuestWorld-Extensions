@@ -1,6 +1,6 @@
 package com.questworld.extension.votifier;
 
-import me.mrCookieSlime.QuestWorld.api.QuestExtension;
+import com.questworld.api.QuestExtension;
 
 public class Votifier extends QuestExtension {
 	public Votifier() {

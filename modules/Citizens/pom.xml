@@ -12,10 +12,6 @@
 			<groupId>net.citizensnpcs</groupId>
 			<artifactId>citizensapi</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>me.mrcookieslime</groupId>
-			<artifactId>CS-CoreLib</artifactId>
-		</dependency>
 	</dependencies>
 	<version>1.3.0</version>
 </project>

@@ -8,14 +8,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.QuestWorld.api.Decaying;
-import me.mrCookieSlime.QuestWorld.api.MissionType;
-import me.mrCookieSlime.QuestWorld.api.QuestWorld;
-import me.mrCookieSlime.QuestWorld.api.contract.IMission;
-import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
-import me.mrCookieSlime.QuestWorld.api.contract.MissionEntry;
-import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
-import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
+import com.questworld.api.Decaying;
+import com.questworld.api.MissionType;
+import com.questworld.api.QuestWorld;
+import com.questworld.api.contract.IMission;
+import com.questworld.api.contract.IMissionState;
+import com.questworld.api.contract.MissionEntry;
+import com.questworld.api.menu.MissionButton;
+import com.questworld.util.ItemBuilder;
+
 import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.NPC;
 

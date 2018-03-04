@@ -2,9 +2,10 @@ package com.questworld.extension.money;
 
 import org.bukkit.plugin.Plugin;
 
-import me.mrCookieSlime.QuestWorld.api.QuestExtension;
-import me.mrCookieSlime.QuestWorld.api.QuestWorld;
-import me.mrCookieSlime.QuestWorld.util.Log;
+import com.questworld.api.QuestExtension;
+import com.questworld.api.QuestWorld;
+import com.questworld.util.Log;
+
 import net.milkbowl.vault.economy.Economy;
 
 public class Money extends QuestExtension {

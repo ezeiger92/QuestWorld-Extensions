@@ -8,13 +8,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import me.mrCookieSlime.QuestWorld.api.contract.IMissionState;
-import me.mrCookieSlime.QuestWorld.api.event.GenericPlayerLeaveEvent;
-import me.mrCookieSlime.QuestWorld.api.menu.MenuData;
-import me.mrCookieSlime.QuestWorld.api.menu.MissionButton;
-import me.mrCookieSlime.QuestWorld.api.menu.QuestBook;
-import me.mrCookieSlime.QuestWorld.util.ItemBuilder;
-import me.mrCookieSlime.QuestWorld.util.PlayerTools;
+import com.questworld.api.contract.IMissionState;
+import com.questworld.api.event.GenericPlayerLeaveEvent;
+import com.questworld.api.menu.MenuData;
+import com.questworld.api.menu.MissionButton;
+import com.questworld.api.menu.QuestBook;
+import com.questworld.util.ItemBuilder;
+import com.questworld.util.PlayerTools;
+
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 

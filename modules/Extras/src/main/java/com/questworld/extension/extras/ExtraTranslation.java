@@ -1,6 +1,6 @@
 package com.questworld.extension.extras;
 
-import me.mrCookieSlime.QuestWorld.api.Translator;
+import com.questworld.api.Translator;
 
 public enum ExtraTranslation implements Translator {
 	test("test.node", "player", "length")
