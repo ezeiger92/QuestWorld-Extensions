@@ -6,12 +6,12 @@
 		<version>1.0.0</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-	<artifactId>QW-Votifier</artifactId>
+	<artifactId>QW-Papi</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>com.vexsoftware</groupId>
-			<artifactId>nuvotifier-universal</artifactId>
+			<groupId>me.clip</groupId>
+			<artifactId>placeholderapi</artifactId>
 		</dependency>
 	</dependencies>
-	<version>2.0.0</version>
+	<version>0.0.1</version>
 </project>
