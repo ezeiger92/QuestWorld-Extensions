@@ -42,6 +42,11 @@ public class SubmitAtMission extends MissionType implements Manual {
 	}
 
 	@Override
+	public ItemStack userDisplayItem(IMission instance) {
+		return locate.userDisplayItem(instance);
+	}
+
+	@Override
 	public void onManual(Player player, MissionEntry result) {
 		int progress = result.getProgress();
 		locate.onManual(player, result);
@@ -110,10 +115,5 @@ public class SubmitAtMission extends MissionType implements Manual {
 					changes.setCustomInt(Math.max(amount, 1));
 				}
 		));
-	}
-
-	@Override
-	public ItemStack userDisplayItem(IMission instance) {
-		return locate.userDisplayItem(instance);
 	}
 }
