@@ -62,7 +62,6 @@
 			<dependency>
 				<groupId>org.bukkit</groupId>
 				<artifactId>bukkit</artifactId>
-				<version>1.12.2-R0.1-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 			<!-- QuestWorld dep -->
@@ -122,6 +121,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
+			<version>1.12.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- QuestWorld dep -->
@@ -140,5 +140,6 @@
 		<module>modules/Extras</module>
 		<module>modules/Papi</module>
 		<module>modules/Votifier</module>
+		<module>modules/Legacy</module>
 	</modules>
 </project>

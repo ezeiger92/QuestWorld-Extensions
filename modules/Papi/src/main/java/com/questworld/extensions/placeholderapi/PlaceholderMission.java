@@ -14,7 +14,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 public class PlaceholderMission extends MissionType implements Ticking {
 
 	public PlaceholderMission() {
-		super("PLACEHOLDER", false, new ItemStack(Material.STONE));
+		super("PLACEHOLDER", false, new ItemStack(Material.NAME_TAG));
 	}
 
 	@Override
