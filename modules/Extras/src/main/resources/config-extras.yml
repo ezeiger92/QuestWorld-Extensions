@@ -1,0 +1,8 @@
+# ITEM_CRACK BLOCK_CRACK BLOCK_DUST FALLING_DUST
+npc_particles:
+  period: 32
+  nearby: { x: 20.0, y: 8.0, z: 20.0 }
+  type: VILLAGER_HAPPY
+  count: 20
+  spread: { x: 0.5, y: 0.7, z: 0.5 }
+  extra: 0
