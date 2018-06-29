@@ -10,7 +10,9 @@ public class Extras extends QuestExtension {
 		setMissionTypes(
 			new ClickBlockMission(),
 			new CommandMission(),
+			new DoQuestMission(),
 			new HarvestMission(),
+			new StatisticMission(),
 			new SubmitAtMission());
 	}
 }

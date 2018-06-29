@@ -7,7 +7,6 @@ import net.citizensnpcs.api.npc.NPC;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -66,8 +65,6 @@ public class Citizens extends QuestExtension {
 		parent.getServer().getPluginManager().registerEvents(new CitizenButton.Listener(), parent);
 		
 		onReload();
-		ItemStack stack = new ItemStack(Material.STAINED_CLAY);
-		config.set("test_item", stack);
 	}
 	
 	private int runner(Plugin parent) {
