@@ -6,7 +6,7 @@
 		<version>1.0.0</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-	<artifactId>Legacy1_8_8</artifactId>
+	<artifactId>QW-Legacy</artifactId>
 	<dependencies>
 		<!-- Bukkit/Spigot dep -->
 		<dependency>
