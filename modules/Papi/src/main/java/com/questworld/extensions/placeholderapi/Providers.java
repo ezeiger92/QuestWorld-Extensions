@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.questworld.api.QuestStatus;
 import com.questworld.api.QuestWorld;
@@ -13,9 +14,14 @@ import com.questworld.api.contract.IPlayerStatus;
 import com.questworld.api.contract.IQuest;
 import com.questworld.util.Log;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
 
 public class Providers extends PlaceholderHook {
+	
+	public Providers(Plugin parent) {
+		PlaceholderAPI.registerPlaceholderHook(parent, this);
+	}
 	
 	private static UUID uuidOrNull(String in) {
 		try {
