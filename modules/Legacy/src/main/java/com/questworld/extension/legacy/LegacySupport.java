@@ -51,6 +51,12 @@ public class LegacySupport extends QuestExtension {
 			// TODO: Maybe this works w/nms
 			return;
 		}
+		
+		@SuppressWarnings("deprecation")
+		@Override
+		public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+			player.sendTitle(title, subtitle);
+		}
 
 	}
 }

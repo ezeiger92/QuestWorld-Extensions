@@ -24,7 +24,6 @@ import com.questworld.util.Pair;
 public class Citizens extends QuestExtension {
 	FileConfiguration config;
 	private int task = -1;
-	private static HashSet<MissionType> types = new HashSet<>();
 	
 	public static NPC npcFrom(IMission instance) {
 		return npcFrom(instance.getCustomInt());
@@ -41,9 +40,6 @@ public class Citizens extends QuestExtension {
 			new CitizenInteractMission(),
 			new CitizenSubmitMission(),
 			new CitizenKillMission());
-		
-		for(MissionType type : getMissionTypes())
-			types.add(type);
 	}
 	
 	@Override
@@ -55,8 +51,7 @@ public class Citizens extends QuestExtension {
 	public void onReload() {
 		config = getConfiguration("config-citizens.yml");
 		
-		if(task >= 0)
-			Bukkit.getScheduler().cancelTask(task);
+		disable();
 		task = runner(QuestWorld.getPlugin());
 	}
 	
@@ -64,7 +59,17 @@ public class Citizens extends QuestExtension {
 	protected void initialize(Plugin parent) {
 		parent.getServer().getPluginManager().registerEvents(new CitizenButton.Listener(), parent);
 		
+		getAPI().getLang().importLanguages(getResourceLoader());
+		
 		onReload();
+	}
+	
+	@Override
+	protected void disable() {
+		if(task >= 0) {
+			Bukkit.getScheduler().cancelTask(task);
+			task = -1;
+		}
 	}
 	
 	private int runner(Plugin parent) {
@@ -105,7 +110,7 @@ public class Citizens extends QuestExtension {
 			
 			HashSet<Pair<Player, Location>> display = new HashSet<>();
 			
-			for(MissionType type : types)
+			for(MissionType type : getMissionTypes())
 				for(IMission mission : QuestWorld.getViewer().getMissionsOf(type)) {
 					NPC npc = npcFrom(mission);
 					
