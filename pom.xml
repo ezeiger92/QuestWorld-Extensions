@@ -140,8 +140,5 @@
 		<module>modules/Extras</module>
 		<module>modules/Papi</module>
 		<module>modules/Votifier</module>
-		
-		
-		
 	</modules>
 </project>
