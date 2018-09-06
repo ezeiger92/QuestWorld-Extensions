@@ -21,7 +21,7 @@ public class ChatReactMission extends MissionType implements Listener {
 	
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		return new ItemStack(Material.COMMAND);
+		return new ItemStack(Material.COMMAND_BLOCK);
 	}
 	
 	@Override

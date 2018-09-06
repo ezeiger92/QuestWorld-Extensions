@@ -22,7 +22,7 @@ import com.questworld.util.PlayerTools;
 public class CommandMission extends MissionType implements Listener {
 
 	public CommandMission() {
-		super("COMMAND", false, new ItemStack(Material.COMMAND));
+		super("COMMAND", false, new ItemStack(Material.COMMAND_BLOCK));
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class ASkyBlockLevelMission extends MissionType implements Listener, Tick
 	
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		return new ItemStack(Material.COMMAND);
+		return new ItemStack(Material.COMMAND_BLOCK);
 	}
 	
 	@Override

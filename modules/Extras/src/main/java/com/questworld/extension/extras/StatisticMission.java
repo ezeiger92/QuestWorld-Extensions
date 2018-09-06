@@ -17,7 +17,7 @@ import com.questworld.util.Text;
 public class StatisticMission extends MissionType implements Ticking {
 
 	public StatisticMission() {
-		super("STATISTIC", false, new ItemStack(Material.WATCH));
+		super("STATISTIC", false, new ItemStack(Material.CLOCK));
 	}
 
 	@Override

@@ -28,7 +28,7 @@ import net.citizensnpcs.api.npc.NPC;
 public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	public CitizenAcceptQuestMission() {
 		setName("ACCEPT_QUEST_FROM_NPC");
-		this.setSelectorItem(new ItemStack(Material.BOOK_AND_QUILL));
+		this.setSelectorItem(new ItemStack(Material.WRITABLE_BOOK));
 	}
 
 	@Override

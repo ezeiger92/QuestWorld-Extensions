@@ -1,7 +1,6 @@
 package com.questworld.extension.citizens;
 
 import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +26,7 @@ public class CitizenKillMission extends MissionType implements Listener, Decayin
 	
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		return new ItemBuilder(SkullType.PLAYER).get();
+		return new ItemBuilder(Material.PLAYER_HEAD).get();
 	}
 	
 	@Override

@@ -2,15 +2,14 @@ package com.questworld.extension.extras;
 
 import java.util.EnumMap;
 
-import org.bukkit.CropState;
 import org.bukkit.Material;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Crops;
-import org.bukkit.material.MaterialData;
 
 import com.questworld.api.Decaying;
 import com.questworld.api.MissionType;
@@ -36,23 +35,20 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 	}
 	
 	static {
-		crops.put(Material.SEEDS, Material.WHEAT);
-		crops.put(Material.CROPS, Material.WHEAT);
+		crops.put(Material.WHEAT_SEEDS, Material.WHEAT);
+		crops.put(Material.WHEAT, Material.WHEAT);
 		
 		crops.put(Material.BEETROOT_SEEDS, Material.BEETROOT);
-		crops.put(Material.BEETROOT_BLOCK, Material.BEETROOT);
+		crops.put(Material.BEETROOTS, Material.BEETROOT);
 
-		crops.put(Material.POTATO, Material.POTATO_ITEM);
+		crops.put(Material.POTATO, Material.POTATO);
+		crops.put(Material.POTATOES, Material.POTATO);
 
-		crops.put(Material.CARROT, Material.CARROT_ITEM);
+		crops.put(Material.CARROT, Material.CARROT);
+		crops.put(Material.CARROTS, Material.CARROT);
 
-		crops.put(Material.NETHER_WART_BLOCK, Material.NETHER_WARTS);
-
-		crops.put(Material.WHEAT,        Material.WHEAT);
-		crops.put(Material.BEETROOT,     Material.BEETROOT);
-		crops.put(Material.POTATO_ITEM,  Material.POTATO_ITEM);
-		crops.put(Material.CARROT_ITEM,  Material.CARROT_ITEM);
-		crops.put(Material.NETHER_WARTS, Material.NETHER_WARTS);
+		crops.put(Material.NETHER_WART, Material.NETHER_WART);
+		crops.put(Material.NETHER_WART_BLOCK, Material.NETHER_WART);
 	}
 
 	@Override
@@ -66,9 +62,9 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void onBlockBreak(BlockBreakEvent event) {
-		MaterialData data = event.getBlock().getState().getData();
+		BlockData data = event.getBlock().getBlockData();
 		
-		if(data instanceof Crops && ((Crops)data).getState() == CropState.RIPE) {
+		if(data instanceof Ageable && ((Ageable)data).getAge() == ((Ageable)data).getMaximumAge()) {
 			Material crop = crops.get(event.getBlock().getType());
 			
 			for(MissionEntry r : QuestWorld.getMissionEntries(this, event.getPlayer()))
