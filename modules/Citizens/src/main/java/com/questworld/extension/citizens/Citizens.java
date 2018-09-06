@@ -75,6 +75,12 @@ public class Citizens extends QuestExtension {
 	private int runner(Plugin parent) {
 		ConfigurationSection particleConfig = config.getConfigurationSection("npc_particles");
 		
+		long period = particleConfig.getLong("period", 32L);
+		
+		if(period <= 0) {
+			return -1;
+		}
+		
 		return parent.getServer().getScheduler().scheduleSyncRepeatingTask(parent, () -> {
 			Particle particleType = Particle.VILLAGER_HAPPY;
 			try {
@@ -135,6 +141,6 @@ public class Citizens extends QuestExtension {
 				pair.getLeft().spawnParticle(particleType, pair.getRight(),
 						count, spreadX, spreadY, spreadZ, extra, particleData);
 			
-		}, 0L, particleConfig.getLong("period", 32L));
+		}, 0L, period);
 	}
 }

@@ -1,5 +1,6 @@
 package com.questworld.extension.extras;
 
+import java.util.Collection;
 import java.util.EnumMap;
 
 import org.bukkit.Material;
@@ -23,7 +24,7 @@ import com.questworld.util.Text;
 
 public class HarvestMission extends MissionType implements Listener, Decaying {
 
-	private static EnumMap<Material, Material> crops = new EnumMap<>(Material.class);
+	private final EnumMap<Material, Material> crops = new EnumMap<>(Material.class);
 	
 	public HarvestMission() {
 		super("HARVEST", true, new ItemStack(Material.WHEAT));
@@ -34,21 +35,16 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 		return "&7Harvest "+instance.getAmount()+"x "+Text.niceName(userDisplayItem(instance).getType().name());
 	}
 	
-	static {
-		crops.put(Material.WHEAT_SEEDS, Material.WHEAT);
-		crops.put(Material.WHEAT, Material.WHEAT);
+	public void addCrop(Material crop, Collection<Material> aliases) {
+		for(Material m : aliases) {
+			crops.put(m, crop);
+		}
 		
-		crops.put(Material.BEETROOT_SEEDS, Material.BEETROOT);
-		crops.put(Material.BEETROOTS, Material.BEETROOT);
-
-		crops.put(Material.POTATO, Material.POTATO);
-		crops.put(Material.POTATOES, Material.POTATO);
-
-		crops.put(Material.CARROT, Material.CARROT);
-		crops.put(Material.CARROTS, Material.CARROT);
-
-		crops.put(Material.NETHER_WART, Material.NETHER_WART);
-		crops.put(Material.NETHER_WART_BLOCK, Material.NETHER_WART);
+		crops.put(crop, crop);
+	}
+	
+	public void clearCrops() {
+		crops.clear();
 	}
 
 	@Override
