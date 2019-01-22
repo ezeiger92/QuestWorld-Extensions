@@ -14,6 +14,7 @@ import com.questworld.api.contract.IMission;
 import com.questworld.api.contract.IMissionState;
 import com.questworld.api.contract.MissionEntry;
 import com.questworld.api.menu.MissionButton;
+import com.questworld.util.version.ObjectMap.VDMaterial;
 import com.wasteofplastic.askyblock.ASkyBlockAPI;
 import com.wasteofplastic.askyblock.events.IslandPostLevelEvent;
 
@@ -24,7 +25,7 @@ public class ASkyBlockLevelMission extends MissionType implements Listener, Tick
 	
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		return new ItemStack(Material.COMMAND_BLOCK);
+		return new ItemStack(VDMaterial.COMMAND_BLOCK);
 	}
 	
 	@Override

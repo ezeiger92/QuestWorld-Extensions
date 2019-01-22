@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 
 import org.bukkit.Material;
-import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,6 +19,7 @@ import com.questworld.api.contract.MissionEntry;
 import com.questworld.api.menu.MissionButton;
 import com.questworld.util.ItemBuilder;
 import com.questworld.util.Text;
+import com.questworld.util.version.ObjectMap.VDBlock;
 
 public class HarvestMission extends MissionType implements Listener, Decaying {
 
@@ -58,9 +57,8 @@ public class HarvestMission extends MissionType implements Listener, Decaying {
 
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void onBlockBreak(BlockBreakEvent event) {
-		BlockData data = event.getBlock().getBlockData();
 		
-		if(data instanceof Ageable && ((Ageable)data).getAge() == ((Ageable)data).getMaximumAge()) {
+		if(VDBlock.isCropGrown(event.getBlock())) {
 			Material crop = crops.get(event.getBlock().getType());
 			
 			for(MissionEntry r : QuestWorld.getMissionEntries(this, event.getPlayer()))

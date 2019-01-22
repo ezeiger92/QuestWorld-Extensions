@@ -2,7 +2,6 @@ package com.questworld.extension.extras;
 
 import java.util.Locale;
 
-import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,11 +12,12 @@ import com.questworld.api.contract.IMission;
 import com.questworld.api.contract.IMissionState;
 import com.questworld.api.contract.MissionEntry;
 import com.questworld.util.Text;
+import com.questworld.util.version.ObjectMap.VDMaterial;
 
 public class StatisticMission extends MissionType implements Ticking {
 
 	public StatisticMission() {
-		super("STATISTIC", false, new ItemStack(Material.CLOCK));
+		super("STATISTIC", false, new ItemStack(VDMaterial.CLOCK));
 	}
 
 	@Override

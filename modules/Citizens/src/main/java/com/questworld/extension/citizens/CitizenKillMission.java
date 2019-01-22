@@ -15,6 +15,7 @@ import com.questworld.api.contract.IMissionState;
 import com.questworld.api.contract.MissionEntry;
 import com.questworld.api.menu.MissionButton;
 import com.questworld.util.ItemBuilder;
+import com.questworld.util.version.ObjectMap.VDItemStack;
 
 import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -26,7 +27,7 @@ public class CitizenKillMission extends MissionType implements Listener, Decayin
 	
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		return new ItemBuilder(Material.PLAYER_HEAD).get();
+		return new ItemBuilder(VDItemStack.getPlayerHead()).get();
 	}
 	
 	@Override

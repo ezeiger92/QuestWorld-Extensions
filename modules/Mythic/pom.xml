@@ -17,5 +17,12 @@
 			<scope>system</scope>
 			<systemPath>PathToMythicMobs.jar</systemPath>
 		</dependency> -->
+		<dependency>
+			<artifactId>dummy</artifactId>
+			<groupId>dummy</groupId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>C:\Users\Erik\Downloads\MythicMobs-4.4.1.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>
