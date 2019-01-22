@@ -19,7 +19,6 @@ import org.bukkit.plugin.Plugin;
 import com.questworld.api.QuestExtension;
 import com.questworld.api.QuestWorld;
 import com.questworld.api.contract.IMission;
-import com.questworld.util.Log;
 import com.questworld.util.Pair;
 
 public class Extras extends QuestExtension {
@@ -41,24 +40,16 @@ public class Extras extends QuestExtension {
 			new SubmitAtMission());
 		
 		onReload();
-		
-		Log.info("config on startup: " + config);
 	}
 	
 	@Override
 	public void onSave() {
-
-		
-		Log.info("config before save: " + config);
-		
 		try {
 			getResourceLoader().saveConfig(config, "config-extras.yml");
 		}
 		catch(Throwable t) {
 			t.printStackTrace();
 		}
-		
-		Log.info("config after save: " + config);
 	}
 	
 	@Override
