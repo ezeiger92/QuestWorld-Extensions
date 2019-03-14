@@ -47,7 +47,7 @@ public class DoQuestMission extends MissionType implements Listener {
 				name = "(unknown quest error)";
 		}
 		
-		return "Complete " + name + " " + instance.getAmount() + " times";
+		return "&7Complete " + name + "&7 " + instance.getAmount() + " times";
 	}
 
 	@Override
@@ -67,25 +67,32 @@ public class DoQuestMission extends MissionType implements Listener {
 	@Override
 	protected void layoutMenu(IMissionState changes) {
 		ItemStack item = new ItemStack(Material.MAP);
+		IQuest quest;
 		try {
 			UUID uuid = UUID.fromString(changes.getCustomString());
-			IQuest quest = QuestWorld.getFacade().getQuest(uuid);
+			quest = QuestWorld.getFacade().getQuest(uuid);
 			
 			if(quest != null)
 				item = new ItemBuilder(quest.getItem()).wrapText(quest.getName()).get();
 		}
 		catch(IllegalArgumentException e) {
-			
+			quest = null;
 		}
 		
-		putButton(10, MissionButton.simpleButton(changes, item, event -> {
-			if(event.isRightClick())
-				changes.setCustomString("");
-			
-			else {
-				
-			}
-		}));
+		putButton(10, MissionButton.simpleButton(changes,
+				new ItemBuilder(item).wrapText(
+						"Quest: " + (quest != null ? quest.getName() : "&r&o-none-"),
+						"",
+						"&e> Click to select quest").get(),
+				event -> {
+					if(event.isRightClick())
+						changes.setCustomString("");
+					else {
+						missionTargetCategories((Player) event.getWhoClicked(), changes);
+					}
+					
+				}
+		));
 		
 		putButton(17, MissionButton.amount(changes));
 	}
@@ -120,18 +127,24 @@ public class DoQuestMission extends MissionType implements Listener {
 
 		PagedMapping pager = new PagedMapping(45, 9);
 		for (IQuest quest : category.getQuests()) {
-			pager.addButton(quest.getID(), new ItemBuilder(quest.getItem()).wrapText(quest.getName(), "",
-					"&e> Click to pick quest for &f&o" + name).get(),
-					event -> {
-						Player p2 = (Player) event.getWhoClicked();
-						PagedMapping.popPage(p2);
-
-						mission.setCustomString(quest.getUniqueId().toString());
-						
-						if(mission.apply())
-							QuestBook.openQuestMissionEditor(p, mission.getSource());
-						
-					}, false);
+			if(quest != mission.getQuest()) {
+				pager.addButton(quest.getID(), new ItemBuilder(quest.getItem()).wrapText(quest.getName(), "",
+						"&e> Click to pick quest for &f&o" + name).get(),
+						event -> {
+							Player p2 = (Player) event.getWhoClicked();
+							PagedMapping.popPage(p2);
+	
+							mission.setCustomString(quest.getUniqueId().toString());
+							
+							if(mission.apply())
+								QuestBook.openQuestMissionEditor(p, mission.getSource());
+							
+						}, false);
+			}
+			else {
+				pager.addButton(quest.getID(), new ItemBuilder(Material.BARRIER)
+						.wrapText(category.getName(), "", "&c> Requirement cycle").get(), null, false);
+			}
 		}
 		
 		pager.setBackButton(" &3Categories", event -> missionTargetCategories(p, mission));

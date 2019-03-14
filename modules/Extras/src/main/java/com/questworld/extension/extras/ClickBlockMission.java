@@ -147,6 +147,7 @@ public class ClickBlockMission extends MissionType implements Listener {
 					));
 				}
 		));
+		
 		putButton(17, MissionButton.simpleButton(
 				changes,
 				new ItemBuilder(Material.COMPASS).wrapText(

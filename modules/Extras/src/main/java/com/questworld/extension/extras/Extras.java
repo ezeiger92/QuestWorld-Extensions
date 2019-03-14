@@ -132,7 +132,7 @@ public class Extras extends QuestExtension {
 			for(IMission mission : QuestWorld.getViewer().getMissionsOf(clickBlock)) {
 				Location loc = mission.getLocation();
 				
-				if (loc != null) {
+				if (loc != null && loc.getWorld() != null) {
 					for (Entity n: loc.getWorld().getNearbyEntities(loc, nearX, nearY, nearZ))
 						if (n instanceof Player) {
 							Player p = (Player)n;

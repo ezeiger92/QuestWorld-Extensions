@@ -18,6 +18,7 @@ import com.questworld.api.menu.MissionButton;
 import com.questworld.api.menu.QuestBook;
 import com.questworld.util.ItemBuilder;
 import com.questworld.util.PlayerTools;
+import com.questworld.util.Text;
 import com.questworld.util.version.ObjectMap.VDMaterial;
 
 public class CommandMission extends MissionType implements Listener {
@@ -41,7 +42,9 @@ public class CommandMission extends MissionType implements Listener {
 		
 		for(MissionEntry r : QuestWorld.getMissionEntries(this, event.getPlayer()))
 			if(event.getMessage().equalsIgnoreCase(r.getMission().getCustomString())) {
-				event.setCancelled(true);
+				if(r.getMission().getCustomInt() == 0)
+					event.setCancelled(true);
+				
 				r.addProgress(1);
 			}
 	}
@@ -68,7 +71,7 @@ public class CommandMission extends MissionType implements Listener {
 					p.closeInventory();
 					PlayerTools.promptCommand(
 							p,
-							new SinglePrompt("&aEnter a command (/exit to cancel):", (c,s) -> {
+							new SinglePrompt("&aEnter a command (/exit to abort):", (c,s) -> {
 								
 								if(!s.equalsIgnoreCase("/exit")) {
 									p.sendMessage("Setting command to "+s);
@@ -82,6 +85,18 @@ public class CommandMission extends MissionType implements Listener {
 								return true;
 							}
 					));
+				}
+		));
+		
+		putButton(11, MissionButton.simpleButton(changes,
+				new ItemBuilder(VDMaterial.COMMAND_BLOCK).wrapText(
+						"Run command: " + Text.booleanBadge(changes.getCustomInt() == 1),
+						"",
+						"Will the command be run by the player on completion or will it be consumed?"
+						).get(),
+				
+				event -> {
+					changes.setCustomInt(changes.getCustomInt() == 0 ? 1 : 0);
 				}
 		));
 	}
