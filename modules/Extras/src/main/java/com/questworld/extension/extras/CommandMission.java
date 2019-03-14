@@ -90,9 +90,9 @@ public class CommandMission extends MissionType implements Listener {
 		
 		putButton(11, MissionButton.simpleButton(changes,
 				new ItemBuilder(VDMaterial.COMMAND_BLOCK).wrapText(
-						"Run command: " + Text.booleanBadge(changes.getCustomInt() == 1),
+						"&7Consume command: " + Text.booleanBadge(changes.getCustomInt() == 0),
 						"",
-						"Will the command be run by the player on completion or will it be consumed?"
+						"&e> Will the command be consumed and not run?"
 						).get(),
 				
 				event -> {
