@@ -8,21 +8,18 @@
 	</parent>
 	<artifactId>QW-Mythic</artifactId>
 	<version>0.1.0</version>
-	<dependencies>
-		<!-- Reference MythicMobs jar. Afaik no public maven -->
-		<!-- <dependency>
-			<artifactId>dummy</artifactId>
-			<groupId>dummy</groupId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>PathToMythicMobs.jar</systemPath>
-		</dependency> -->
-		<dependency>
-			<artifactId>dummy</artifactId>
-			<groupId>dummy</groupId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>C:\Users\Erik\Downloads\MythicMobs-4.4.1.jar</systemPath>
-		</dependency>
-	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+					<excludes>
+						<exclude>io/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

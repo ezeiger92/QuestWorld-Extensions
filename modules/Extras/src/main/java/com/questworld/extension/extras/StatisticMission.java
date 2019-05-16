@@ -52,8 +52,7 @@ public class StatisticMission extends MissionType implements Ticking {
 
 	@Override
 	public ItemStack userDisplayItem(IMission instance) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSelectorItem().clone();
 	}
 
 	@Override
