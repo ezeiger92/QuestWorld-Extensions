@@ -1,13 +1,9 @@
 package com.questworld.extension.extras;
 
-import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,17 +21,14 @@ public class Extras extends QuestExtension {
 	FileConfiguration config;
 	private int task = -1;
 	private ClickBlockMission clickBlock;
-	private HarvestMission harvest;
 	
 	@Override
 	protected void initialize(Plugin plugin) {
 		clickBlock = new ClickBlockMission();
-		harvest = new HarvestMission();
 		setMissionTypes(
 			clickBlock,
 			new CommandMission(),
 			new DoQuestMission(),
-			harvest,
 			new StatisticMission(),
 			new SubmitAtMission());
 		
@@ -55,30 +48,6 @@ public class Extras extends QuestExtension {
 	@Override
 	public void onReload() {
 		config = getConfiguration("config-extras.yml");
-		ConfigurationSection cropSection = config.getConfigurationSection("crop_aliases");
-		
-		for(Map.Entry<String, Object> cropEntry : cropSection.getValues(false).entrySet()) {
-			Material crop = Material.matchMaterial(cropEntry.getKey());
-			
-			if(crop != null) {
-				EnumSet<Material> aliases = EnumSet.noneOf(Material.class);
-				
-				// Why did you give me a non-list?
-				if(!List.class.isAssignableFrom(cropEntry.getValue().getClass())) {
-					continue;
-				}
-	
-				for(Object s : (List<?>)cropEntry.getValue()) {
-					Material alias = Material.matchMaterial(String.valueOf(s));
-					
-					if(alias != null) {
-						aliases.add(alias);
-					}
-				}
-				
-				harvest.addCrop(crop, aliases);
-			}
-		}
 		
 		if(task >= 0)
 			Bukkit.getScheduler().cancelTask(task);

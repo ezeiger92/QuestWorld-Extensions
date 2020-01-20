@@ -21,7 +21,6 @@ import com.questworld.util.ItemBuilder;
 import com.questworld.util.PlayerTools;
 import com.questworld.util.Text;
 import com.questworld.util.json.JsonBlob;
-import com.questworld.util.version.ObjectMap.VDMaterial;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -29,7 +28,7 @@ import net.citizensnpcs.api.npc.NPC;
 public class CitizenAcceptQuestMission extends CitizenInteractMission {
 	public CitizenAcceptQuestMission() {
 		setName("ACCEPT_QUEST_FROM_NPC");
-		this.setSelectorItem(new ItemStack(VDMaterial.WRITABLE_BOOK));
+		this.setSelectorItem(new ItemStack(Material.WRITABLE_BOOK));
 	}
 
 	@Override

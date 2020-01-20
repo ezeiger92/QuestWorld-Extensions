@@ -19,12 +19,11 @@ import com.questworld.api.menu.QuestBook;
 import com.questworld.util.ItemBuilder;
 import com.questworld.util.PlayerTools;
 import com.questworld.util.Text;
-import com.questworld.util.version.ObjectMap.VDMaterial;
 
 public class CommandMission extends MissionType implements Listener {
 
 	public CommandMission() {
-		super("COMMAND", false, new ItemStack(VDMaterial.COMMAND_BLOCK));
+		super("COMMAND", false, new ItemStack(Material.COMMAND_BLOCK));
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public class CommandMission extends MissionType implements Listener {
 		));
 		
 		putButton(11, MissionButton.simpleButton(changes,
-				new ItemBuilder(VDMaterial.COMMAND_BLOCK).wrapText(
+				new ItemBuilder(Material.COMMAND_BLOCK).wrapText(
 						"&7Consume command: " + Text.booleanBadge(changes.getCustomInt() == 0),
 						"",
 						"&e> Will the command be consumed and not run?"
